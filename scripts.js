@@ -52,7 +52,9 @@ function tableCreate(user_row, user_col, list, header) {
         tblClassName = "effectTable";
     }
     tbl.className = tblClassName;
-    tbl.id = tblClassName;
+
+    let tblId = tblClassName + Math.random().toString(36).substr(2, 9); // Generate a unique ID for each table
+    tbl.id = tblId;
     var tblBody = document.createElement("tbody");
     console.log("Creating table: " + tblClassName);
 
@@ -65,9 +67,6 @@ function tableCreate(user_row, user_col, list, header) {
             var cell;
             if (j == 0) {
                 cell = document.createElement("th");
-                cell.onclick = function () {
-                    sortTable(this);
-                };
                 headerRow.appendChild(cell);
             }
             else {
@@ -75,7 +74,7 @@ function tableCreate(user_row, user_col, list, header) {
                 row.appendChild(cell);
             }
             var cellText;
-            cellText = document.createTextNode(list[j][i] || "&nbsp;"); 
+            cellText = document.createTextNode(list[j][i] || ""); 
             cell.appendChild(cellText);
             
         }
@@ -95,7 +94,9 @@ function tableCreate(user_row, user_col, list, header) {
 
     // tbl border attribute to 
     tbl.setAttribute("border", "2");  
-    new DataTable('#' + tblClassName);
+    new DataTable('#' + tblId, {
+        paging: false
+    });
     console.log("Created table: " + tblClassName);
 }
 
