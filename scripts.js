@@ -51,7 +51,7 @@ function tableCreate(user_row, user_col, list, header) {
     {
         tblClassName = "effectTable";
     }
-    tbl.className = tblClassName;
+    tbl.className = tblClassName + " cell-border display compact hover order-column stripe";
 
     let tblId = tblClassName + Math.random().toString(36).substr(2, 9); // Generate a unique ID for each table
     tbl.id = tblId;
@@ -92,8 +92,6 @@ function tableCreate(user_row, user_col, list, header) {
     // put <table> in the <body>
     body.appendChild(tbl);
 
-    // tbl border attribute to 
-    tbl.setAttribute("border", "2");  
     new DataTable('#' + tblId, {
         paging: false
     });
