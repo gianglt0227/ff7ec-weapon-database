@@ -56,6 +56,9 @@ function tableCreate(user_row, user_col, list, header) {
     var tblBody = document.createElement("tbody");
     console.log("Creating table: " + tblClassName);
 
+    var tblHead = document.createElement("thead");
+    tblBody.appendChild(tblHead);
+    var headerRow = document.createElement("tr");
     // create <tr> and <td>
     for (var j = 0; j < user_row; j++) {
         var row = document.createElement("tr");
@@ -67,14 +70,16 @@ function tableCreate(user_row, user_col, list, header) {
                 cell.onclick = function () {
                     sortTable(this);
                 };
+                headerRow.appendChild(cell);
             }
             else {
                 cell = document.createElement("td");
+                row.appendChild(cell);
             }
             var cellText;
             cellText = document.createTextNode(list[j][i] || "&nbsp;"); 
             cell.appendChild(cellText);
-            row.appendChild(cell);
+            
         }
 
         tblBody.appendChild(row);
