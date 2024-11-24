@@ -85,6 +85,7 @@ function tableCreate(user_row, user_col, list, header) {
     // tbl border attribute to 
     tbl.setAttribute("border", "2");  
     new DataTable('#' + tblClassName);
+    $('#' + tblClassName).DataTable();
 }
 
 function sortTable(cell) {
