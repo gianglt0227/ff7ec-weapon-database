@@ -56,10 +56,7 @@ function tableCreate(user_row, user_col, list, header) {
     var tblBody = document.createElement("tbody");
     console.log("Creating table: " + tblClassName);
 
-    var tblHead = document.createElement("thead");
     var headerRow = document.createElement("tr");
-    tblHead.appendChild(headerRow);
-    tblBody.appendChild(tblHead);
     // create <tr> and <td>
     for (var j = 0; j < user_row; j++) {
         var row = document.createElement("tr");
@@ -88,6 +85,9 @@ function tableCreate(user_row, user_col, list, header) {
     }
 
     // append the <tbody> inside the <table>
+    var tblHead = document.createElement("thead");
+    tblHead.appendChild(headerRow);
+    tbl.appendChild(tblHead);
     tbl.appendChild(tblBody);
 
     // put <table> in the <body>
