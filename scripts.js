@@ -50,6 +50,7 @@ function tableCreate(user_row, user_col, list, header) {
         tblClassName = "effectTable";
     }
     tbl.className = tblClassName;
+    tbl.id = tblClassName;
     var tblBody = document.createElement("tbody");
 
     // create <tr> and <td>
