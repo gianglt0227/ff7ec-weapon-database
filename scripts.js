@@ -54,6 +54,7 @@ function tableCreate(user_row, user_col, list, header) {
     tbl.className = tblClassName;
     tbl.id = tblClassName;
     var tblBody = document.createElement("tbody");
+    console.log("Creating table: " + tblClassName);
 
     // create <tr> and <td>
     for (var j = 0; j < user_row; j++) {
@@ -88,6 +89,7 @@ function tableCreate(user_row, user_col, list, header) {
     // tbl border attribute to 
     tbl.setAttribute("border", "2");  
     new DataTable('#' + tblClassName);
+    console.log("Created table: " + tblClassName);
 }
 
 function sortTable(cell) {
@@ -224,7 +226,7 @@ function readDatabase() {
             m++;
 
             weaponDatabase.push(weapData);
-            console.log(weapData);
+            // console.log(weapData);
         }
     }
 }
