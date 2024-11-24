@@ -71,7 +71,7 @@ function tableCreate(user_row, user_col, list, header) {
                 cell = document.createElement("td");
             }
             var cellText;
-            cellText = document.createTextNode(list[j][i]);
+            cellText = document.createTextNode(list[j][i] || ""); 
             cell.appendChild(cellText);
             row.appendChild(cell);
         }
