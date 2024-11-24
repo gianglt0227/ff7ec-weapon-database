@@ -57,8 +57,9 @@ function tableCreate(user_row, user_col, list, header) {
     console.log("Creating table: " + tblClassName);
 
     var tblHead = document.createElement("thead");
-    tblBody.appendChild(tblHead);
     var headerRow = document.createElement("tr");
+    tblHead.appendChild(headerRow);
+    tblBody.appendChild(tblHead);
     // create <tr> and <td>
     for (var j = 0; j < user_row; j++) {
         var row = document.createElement("tr");
