@@ -74,7 +74,6 @@ footer {
 
 .effectTable tr:first-child {
   font-family: arial, sans-serif;
-  font-size: 18px;
   margin-top: 0px;
   margin-bottom: 1px; 
 }
@@ -102,7 +101,6 @@ footer {
 
 .elemTable tr:first-child {
   font-family: arial, sans-serif;
-  font-size: 18px;
   margin-top: 0px;
   margin-bottom: 1px;
 }
@@ -130,7 +128,6 @@ footer {
 
 .uniqueTable tr:first-child {
   font-family: arial, sans-serif;
-  font-size: 18px;
   margin-top: 0px;
   margin-bottom: 1px;
 }
@@ -153,7 +150,6 @@ footer {
 
 .materiaTable tr:first-child {
   font-family: arial, sans-serif;
-  font-size: 18px;
   margin-top: 0px;
   margin-bottom: 1px;
 }
@@ -174,7 +170,6 @@ footer {
 
 .statusTable tr:first-child {
   font-family: arial, sans-serif;
-  font-size: 18px;
   margin-top: 0px;
   margin-bottom: 1px;
 }
