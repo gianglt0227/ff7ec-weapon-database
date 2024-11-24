@@ -82,8 +82,9 @@ function tableCreate(user_row, user_col, list, header) {
             cell.appendChild(cellText);
             
         }
-
-        tblBody.appendChild(row);
+        if (j > 0) {
+            tblBody.appendChild(row);
+        }
     }
 
     // append the <tbody> inside the <table>
