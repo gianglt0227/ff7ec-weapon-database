@@ -1,0 +1,18 @@
+{
+  "name": "ff7ec-weapon-database-tests",
+  "version": "1.0.0",
+  "description": "Final Fantasy 7 Ever Crisis Weapon Database with comprehensive test suite",
+  "scripts": {
+    "test": "jest",
+    "test:unit": "jest tests/unit",
+    "test:integration": "jest tests/integration",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "@testing-library/dom": "^9.3.4"
+  }
+}
