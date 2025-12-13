@@ -7,6 +7,7 @@ Documentation for AI coding agents (Cursor, Windsurf, Aider, Continue, etc.) wor
 **FF7EC Weapon Database** - An interactive single-page web application for browsing and filtering Final Fantasy VII Ever Crisis weapon data.
 
 - **Language**: Vanilla JavaScript (ES5) - No frameworks, no build system
+- **Styling**: Tailwind CSS (`index.html`) + Legacy CSS (`index-legacy.html`)
 - **Data Source**: CSV file with 434+ weapons, 50+ columns per weapon
 - **Dependencies**: jQuery 3.7.1, DataTables 2.1.8 (loaded from CDN)
 - **Testing**: Jest 29.7.0 with 130+ passing tests
@@ -45,7 +46,8 @@ User clicks filter → filter*() function → readDatabase() (lazy load CSV)
 
 | File | Purpose | Lines | Notes |
 |------|---------|-------|-------|
-| `index.html` | Main page | 50 | Dropdown menu with 20+ filters |
+| `index.html` | Modern UI (Main) | - | Hybrid: Tailwind UI + Legacy Config |
+| `index-legacy.html` | Legacy UI | 50 | Dropdown menu with 20+ filters |
 | `scripts.js` | Application logic | 1,030 | 45 functions, heavy duplication |
 | `styles.css` | Styling | - | Table layouts for different views |
 | `weaponData.csv` | Data | 435 | 50+ columns, parsed with regex |
@@ -73,6 +75,16 @@ User clicks filter → filter*() function → readDatabase() (lazy load CSV)
 
 4. **Wrapper Functions** (26 functions) - Filter button handlers
    - All `filter*()` functions delegate to `printWeapon*()` functions
+
+## Hybrid Architecture (index.html)
+
+`index.html` is the new modern interface. It uses a **Hybrid Architecture**:
+1.  **UI**: Native Tailwind CSS for layout, headers, and spacing.
+2.  **Logic**: Reuses the legacy `scripts.js` logic completely.
+3.  **Bridge**: It includes a custom `<script>` block that overrides the global `tableCreate()` function.
+    *   Intercepts table data from `scripts.js`.
+    *   Renders it using Tailwind classes instead of legacy `scripts.js` DOM methods.
+    *   Preserves DataTables sorting logic.
 
 ## Critical Implementation Details
 

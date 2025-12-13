@@ -22,10 +22,10 @@ This is a **Final Fantasy 7 Ever Crisis (FF7EC) Weapon Database** web applicatio
    - `printWeapon*()` family of functions transforms filtered data into table structures
    - `tableCreate()`: Generates HTML tables with DataTables.js integration (lines 20-99)
 
-3. **Presentation Layer** ([index.html](index.html))
-   - Single dropdown menu with 20+ filter options (elements, buffs/debuffs, materia sigils, status effects)
-   - Dynamic content rendering into `#Output` div
-   - External dependencies: jQuery 3.7.1, DataTables 2.1.8
+3. **Presentation Layer**
+   - **Modern UI** ([index3.html](index3.html)): Tailwind CSS based interface. Uses `tableCreate` override to render modern tables while using legacy logic.
+   - **Legacy UI** ([index.html](index.html)): Single dropdown menu with 20+ filter options.
+   - **External Dependencies**: jQuery 3.7.1, DataTables 2.1.8 (CDN), Tailwind CSS (CDN)
 
 4. **Styling** ([styles.css](styles.css))
    - Different table classes for different filter types: `elemTable`, `materiaTable`, `statusTable`, `uniqueTable`, `effectTable`
@@ -37,6 +37,7 @@ This is a **Final Fantasy 7 Ever Crisis (FF7EC) Weapon Database** web applicatio
 User clicks filter → filter*() function → readDatabase() (if first use)
 → Loop through weaponDatabase → findWeaponWithProperty() checks criteria
 → Build 2D array with selected columns → tableCreate() renders HTML table
+   *(Note: index3.html overrides tableCreate() to apply Tailwind styling)*
 → DataTables initialization for sorting
 ```
 

@@ -4,6 +4,7 @@ A comprehensive, interactive weapon database for **Final Fantasy VII Ever Crisis
 
 ## Features
 
+- 🎨 **Modern UI** - Clean, responsive Tailwind CSS design with dark mode
 - 🗡️ **434+ Weapons** - Complete database with all weapon stats and abilities
 - 🔍 **Advanced Filtering** - Filter by element, effects, buffs/debuffs, materia slots, sigils, and more
 - 📊 **Interactive Tables** - Sortable columns with DataTables integration
@@ -21,7 +22,9 @@ python -m http.server 8000
 python3 -m http.server 8000
 
 # Open in browser
-# http://localhost:8000
+# Open in browser
+# http://localhost:8000/ (Modern UI)
+# http://localhost:8000/index-legacy.html (Legacy UI)
 ```
 
 **Note**: Must be served via HTTP server (not `file://`) due to CSV loading requirements.
@@ -46,7 +49,8 @@ npm run test:coverage
 
 ```
 ff7ec-weapon-database/
-├── index.html              # Main application page
+├── index.html              # NEW: Modern Application (Use this)
+├── index-legacy.html       # Legacy Application
 ├── scripts.js              # Core application logic (1,030 lines)
 ├── styles.css              # Styling and table layouts
 ├── weaponData.csv          # Complete weapon database (434+ weapons)
@@ -63,7 +67,8 @@ ff7ec-weapon-database/
 
 ## Technology Stack
 
-- **Frontend**: Vanilla JavaScript (ES5), HTML5, CSS3
+- **Frontend**: Vanilla JavaScript (ES5), HTML5
+- **Styling**: Tailwind CSS (via CDN), Google Fonts (Cinzel, Inter)
 - **Dependencies**: jQuery 3.7.1, DataTables 2.1.8
 - **Testing**: Jest 29.7.0, jsdom
 - **Data Format**: CSV (50+ columns per weapon)
