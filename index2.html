@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FF7EC Weapon Database</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#10B981", // Emerald 500 for that Mako energy feel
+                        "primary-dark": "#059669",
+                        "background-light": "#FFF7ED", // Orange 50 (warm beige like the screenshot)
+                        "background-dark": "#18181B", // Zinc 900
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#27272A", // Zinc 800
+                        "text-main-light": "#3F3F46", // Zinc 700
+                        "text-main-dark": "#E4E4E7", // Zinc 200
+                        "text-muted-light": "#71717A",
+                        "text-muted-dark": "#A1A1AA",
+                    },
+                    fontFamily: {
+                        display: ["Cinzel", "serif"], // Fantasy style font for headers
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style>.custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 4px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #4B5563;
+        }.fade-in {
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }#searchDropdownContent::-webkit-scrollbar {
+            width: 6px;
+        }
+        #searchDropdownContent::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #searchDropdownContent::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 3px;
+        }
+        .dark #searchDropdownContent::-webkit-scrollbar-thumb {
+            background-color: #4B5563;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark font-sans min-h-screen flex flex-col transition-colors duration-300">
+<header class="bg-card-light dark:bg-card-dark shadow-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-4xl">hardware</span>
+<h1 class="font-display text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+                    FF7EC <span class="text-primary">Weapon DB</span>
+</h1>
+</div>
+<div class="flex items-center gap-4">
+<button aria-label="Toggle theme" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-symbols-outlined dark:hidden text-gray-600">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:block text-yellow-400">light_mode</span>
+</button>
+<a class="hidden md:flex items-center gap-2 text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">chat</span> Community
+                </a>
+</div>
+</div>
+</header>
+<main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full relative z-0">
+<div class="text-center mb-12">
+<h2 class="text-4xl md:text-5xl font-display font-bold mb-4 text-gray-800 dark:text-gray-100">
+                Find Your Arsenal
+            </h2>
+<p class="text-lg text-text-muted-light dark:text-text-muted-dark max-w-2xl mx-auto mb-8">
+                The most comprehensive weapon database for Final Fantasy VII Ever Crisis. 
+                Search by stats, abilities, or characters to optimize your build.
+            </p>
+<div class="relative inline-block text-left w-full max-w-md mx-auto group">
+<button aria-expanded="true" aria-haspopup="true" class="inline-flex w-full justify-center items-center gap-2 rounded-lg border border-transparent bg-primary px-6 py-4 text-lg font-semibold text-white shadow-lg hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all transform hover:-translate-y-0.5" id="searchButton" type="button">
+<span class="material-symbols-outlined">search</span>
+                    Database Search
+                    <span class="material-symbols-outlined ml-auto">expand_more</span>
+</button>
+<div class="hidden absolute left-0 right-0 z-50 mt-2 w-full origin-top rounded-xl bg-card-light dark:bg-card-dark shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none fade-in border border-gray-100 dark:border-gray-700 overflow-hidden" id="searchDropdown">
+<div class="max-h-[60vh] overflow-y-auto" id="searchDropdownContent">
+<div class="px-4 py-2 bg-gray-50/50 dark:bg-gray-800/30 sticky top-0 backdrop-blur-sm z-10 border-b border-gray-100 dark:border-gray-700">
+<span class="text-xs font-bold text-text-muted-light dark:text-text-muted-dark uppercase tracking-wider">Elements</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-0.5 p-2">
+<a class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400 rounded-md transition-colors group" href="#" onclick="showResults('Fire')">
+<span class="w-2 h-2 rounded-full bg-red-500 mr-3 group-hover:scale-125 transition-transform"></span> Fire
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-cyan-50 hover:text-cyan-600 dark:hover:bg-cyan-900/20 dark:hover:text-cyan-400 rounded-md transition-colors group" href="#" onclick="showResults('Ice')">
+<span class="w-2 h-2 rounded-full bg-cyan-400 mr-3 group-hover:scale-125 transition-transform"></span> Ice
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-yellow-50 hover:text-yellow-600 dark:hover:bg-yellow-900/20 dark:hover:text-yellow-400 rounded-md transition-colors group" href="#" onclick="showResults('Lightning')">
+<span class="w-2 h-2 rounded-full bg-yellow-400 mr-3 group-hover:scale-125 transition-transform"></span> Lightning
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20 dark:hover:text-blue-400 rounded-md transition-colors group" href="#" onclick="showResults('Water')">
+<span class="w-2 h-2 rounded-full bg-blue-500 mr-3 group-hover:scale-125 transition-transform"></span> Water
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/20 dark:hover:text-green-400 rounded-md transition-colors group" href="#" onclick="showResults('Wind')">
+<span class="w-2 h-2 rounded-full bg-green-500 mr-3 group-hover:scale-125 transition-transform"></span> Wind
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-900/20 dark:hover:text-orange-400 rounded-md transition-colors group" href="#" onclick="showResults('Earth')">
+<span class="w-2 h-2 rounded-full bg-orange-600 mr-3 group-hover:scale-125 transition-transform"></span> Earth
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white rounded-md transition-colors group sm:col-span-2" href="#" onclick="showResults('Non-Elemental')">
+<span class="w-2 h-2 rounded-full bg-gray-400 mr-3 group-hover:scale-125 transition-transform"></span> Non-Elemental
+        </a>
+</div>
+<div class="px-4 py-2 bg-gray-50/50 dark:bg-gray-800/30 sticky top-0 backdrop-blur-sm z-10 border-y border-gray-100 dark:border-gray-700">
+<span class="text-xs font-bold text-text-muted-light dark:text-text-muted-dark uppercase tracking-wider">Debuffs</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-0.5 p-2">
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors" href="#" onclick="showResults('[Debuff] PATK')">
+<span class="material-symbols-outlined text-sm mr-2 text-purple-500">trending_down</span> PATK
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors" href="#" onclick="showResults('[Debuff] MATK')">
+<span class="material-symbols-outlined text-sm mr-2 text-purple-500">trending_down</span> MATK
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors" href="#" onclick="showResults('[Debuff] PDEF')">
+<span class="material-symbols-outlined text-sm mr-2 text-purple-500">shield</span> PDEF
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors" href="#" onclick="showResults('[Debuff] MDEF')">
+<span class="material-symbols-outlined text-sm mr-2 text-purple-500">shield</span> MDEF
+        </a>
+</div>
+<div class="px-4 py-2 bg-gray-50/50 dark:bg-gray-800/30 sticky top-0 backdrop-blur-sm z-10 border-y border-gray-100 dark:border-gray-700">
+<span class="text-xs font-bold text-text-muted-light dark:text-text-muted-dark uppercase tracking-wider">Buffs</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-0.5 p-2">
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors" href="#" onclick="showResults('[Buff] PATK')">
+<span class="material-symbols-outlined text-sm mr-2 text-indigo-500">trending_up</span> PATK
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors" href="#" onclick="showResults('[Buff] MATK')">
+<span class="material-symbols-outlined text-sm mr-2 text-indigo-500">trending_up</span> MATK
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors" href="#" onclick="showResults('[Buff] PDEF')">
+<span class="material-symbols-outlined text-sm mr-2 text-indigo-500">shield_with_heart</span> PDEF
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors" href="#" onclick="showResults('[Buff] MDEF')">
+<span class="material-symbols-outlined text-sm mr-2 text-indigo-500">shield_with_heart</span> MDEF
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors sm:col-span-2" href="#" onclick="showResults('[Buff] Exploit Weakness')">
+<span class="material-symbols-outlined text-sm mr-2 text-indigo-500">target</span> Exploit Weakness
+        </a>
+</div>
+<div class="px-4 py-2 bg-gray-50/50 dark:bg-gray-800/30 sticky top-0 backdrop-blur-sm z-10 border-y border-gray-100 dark:border-gray-700">
+<span class="text-xs font-bold text-text-muted-light dark:text-text-muted-dark uppercase tracking-wider">Utility &amp; Misc</span>
+</div>
+<div class="p-2 space-y-1">
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-green-50 hover:text-green-700 dark:hover:bg-green-900/20 dark:hover:text-green-300 rounded-md transition-colors" href="#" onclick="showResults('Heal')">
+<span class="material-symbols-outlined text-sm mr-3 text-green-500">medical_services</span> Heal
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-gray-900 dark:hover:bg-gray-700 rounded-md transition-colors" href="#" onclick="showResults('Provoke/Veil')">
+<span class="material-symbols-outlined text-sm mr-3 text-gray-400">campaign</span> Provoke/Veil
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-yellow-50 hover:text-yellow-700 dark:hover:bg-yellow-900/20 dark:hover:text-yellow-300 rounded-md transition-colors" href="#" onclick="showResults('Limited/Crossover')">
+<span class="material-symbols-outlined text-sm mr-3 text-yellow-500">star</span> Limited/Crossover
+        </a>
+</div>
+<div class="px-4 py-2 bg-gray-50/50 dark:bg-gray-800/30 sticky top-0 backdrop-blur-sm z-10 border-y border-gray-100 dark:border-gray-700">
+<span class="text-xs font-bold text-text-muted-light dark:text-text-muted-dark uppercase tracking-wider">Sigils</span>
+</div>
+<div class="grid grid-cols-2 gap-0.5 p-2">
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors" href="#" onclick="showResults('O Sigil')">
+<span class="material-symbols-outlined text-sm mr-2 text-gray-400">circle</span> O Sigil
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors" href="#" onclick="showResults('Δ Sigil')">
+<span class="material-symbols-outlined text-sm mr-2 text-gray-400">change_history</span> Δ Sigil
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors" href="#" onclick="showResults('X Sigil')">
+<span class="material-symbols-outlined text-sm mr-2 text-gray-400">close</span> X Sigil
+        </a>
+<a class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors" href="#" onclick="showResults('◇ Sigil')">
+<span class="material-symbols-outlined text-sm mr-2 text-gray-400">diamond</span> ◇ Sigil
+        </a>
+</div>
+<div class="p-2 border-t border-gray-100 dark:border-gray-700">
+<a class="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors" href="#" onclick="showResults('Unique Effect')">
+<span class="material-symbols-outlined text-sm mr-3 text-purple-500">auto_fix_high</span> Status/Enfeeble/Stop/Unique
+        </a>
+</div>
+<div class="p-2 border-t border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/20">
+<a class="flex items-center justify-center px-4 py-3 text-sm font-semibold text-primary hover:text-white hover:bg-primary dark:hover:bg-primary dark:hover:text-white rounded-md transition-all" href="#" onclick="showResults('All weapons')">
+            View All Weapons
+            <span class="material-symbols-outlined text-sm ml-2">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 flex items-center justify-center gap-2 text-sm text-text-muted-light dark:text-text-muted-dark">
+<span class="material-symbols-outlined text-base">info</span>
+<span>Note: Click on column headers to sort results.</span>
+</div>
+</div>
+<div class="hidden space-y-8 animate-fade-in" id="resultsSection">
+<div class="bg-card-light dark:bg-card-dark p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 flex flex-wrap gap-4 items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-display font-bold text-lg text-gray-800 dark:text-gray-100">Results:</span>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">Cloud Strife</span>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">Physical</span>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">Filter</button>
+<button class="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">Export</button>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+<thead class="bg-gray-50 dark:bg-gray-800/50">
+<tr>
+<th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:text-primary group" scope="col">
+<div class="flex items-center gap-1">Weapon <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">sort</span></div>
+</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:text-primary group" scope="col">
+<div class="flex items-center gap-1">Character <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">sort</span></div>
+</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:text-primary group" scope="col">
+<div class="flex items-center gap-1">PATK <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">sort</span></div>
+</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:text-primary group" scope="col">
+<div class="flex items-center gap-1">MATK <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">sort</span></div>
+</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:text-primary group" scope="col">
+<div class="flex items-center gap-1">HEAL <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">sort</span></div>
+</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:text-primary group" scope="col">
+<div class="flex items-center gap-1">C. Ability <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">sort</span></div>
+</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:text-primary group" scope="col">
+<div class="flex items-center gap-1">R. Ability 1 <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">sort</span></div>
+</th>
+</tr>
+</thead>
+<tbody class="bg-card-light dark:bg-card-dark divide-y divide-gray-200 dark:divide-gray-700">
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="flex-shrink-0 h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-md flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-400 text-lg">image</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-medium text-gray-900 dark:text-white">Murasame</div>
+<div class="text-xs text-gray-500 dark:text-gray-400">5★ Level 90</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                        Cloud
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">452</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">210</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">188</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900 dark:text-white">Thunderblade</div>
+<div class="text-xs text-primary">Lightning Pot. High</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                    Boost PATK
+                                </td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="flex-shrink-0 h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-md flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-400 text-lg">image</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-medium text-gray-900 dark:text-white">Fairy Tale</div>
+<div class="text-xs text-gray-500 dark:text-gray-400">5★ Level 90</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200">
+                                        Aerith
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">205</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">388</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">412</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900 dark:text-white">Curaga A</div>
+<div class="text-xs text-primary">Heal Pot. High</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                    Boost Heal
+                                </td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="flex-shrink-0 h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-md flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-400 text-lg">image</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-medium text-gray-900 dark:text-white">Apocalypse</div>
+<div class="text-xs text-gray-500 dark:text-gray-400">5★ Level 90</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                        Cloud
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">480</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">190</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">160</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900 dark:text-white">Cross Slash</div>
+<div class="text-xs text-primary">Wind Pot. Mid</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                    Boost Wind Pot.
+                                </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="bg-gray-50 dark:bg-gray-800/50 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6">
+<div class="flex items-center justify-between">
+<div class="flex-1 flex justify-between sm:hidden">
+<a class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" href="#">Previous</a>
+<a class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" href="#">Next</a>
+</div>
+<div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+<div>
+<p class="text-sm text-gray-700 dark:text-gray-400">
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span class="font-medium">124</span> results
+                                </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+<a class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600" href="#">
+<span class="sr-only">Previous</span>
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</a>
+<a class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600" href="#">1</a>
+<a class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-primary text-sm font-medium text-white" href="#">2</a>
+<a class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600" href="#">3</a>
+<span class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-400">...</span>
+<a class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600" href="#">
+<span class="sr-only">Next</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-card-light dark:bg-card-dark border-t border-gray-200 dark:border-gray-800 mt-auto">
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<h3 class="text-sm font-semibold text-gray-900 dark:text-white tracking-wider uppercase mb-4">Credits</h3>
+<div class="space-y-3 text-sm text-text-muted-light dark:text-text-muted-dark">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">code</span>
+<span>Special thanks to <strong>gianglt0227</strong> for GUI contributions.</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">bug_report</span>
+<span>Database bugs? Contact <strong>Nilu(cia)</strong> on Discord.</span>
+</div>
+</div>
+</div>
+<div class="md:text-right">
+<h3 class="text-sm font-semibold text-gray-900 dark:text-white tracking-wider uppercase mb-4">Contact</h3>
+<div class="space-y-3 text-sm text-text-muted-light dark:text-text-muted-dark">
+<p>For other issues/filters, contact <strong>Cantiga</strong> on Discord.</p>
+<p class="text-xs mt-4">© 2024 Unofficial FF7EC Database. Not affiliated with Square Enix.</p>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        const searchButton = document.getElementById('searchButton');
+        const searchDropdown = document.getElementById('searchDropdown');
+        const resultsSection = document.getElementById('resultsSection');
+        // Toggle dropdown
+        searchButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchDropdown.classList.toggle('hidden');
+            const icon = searchButton.querySelector('.ml-auto');
+            if (searchDropdown.classList.contains('hidden')) {
+                icon.textContent = 'expand_more';
+            } else {
+                icon.textContent = 'expand_less';
+            }
+        });
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchButton.contains(e.target) && !searchDropdown.contains(e.target)) {
+                searchDropdown.classList.add('hidden');
+                searchButton.querySelector('.ml-auto').textContent = 'expand_more';
+            }
+        });
+        // Show results function (simulated)
+        function showResults(type) {
+            searchDropdown.classList.add('hidden');
+            searchButton.querySelector('.ml-auto').textContent = 'expand_more';
+            // Simulate loading or filtering based on 'type'
+            // For this demo, just revealing the section
+            resultsSection.classList.remove('hidden');
+            // Smooth scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body></html>
