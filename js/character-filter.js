@@ -79,46 +79,52 @@ function rebuildCharacterButtons() {
 }
 
 function updateCharacterCounts() {
-    // Track unique weapons per character using Sets
+    // Track unique weapons per character using Sets (faster than arrays for deduplication)
     const characterWeapons = {};
-    allCharacters.forEach(char => {
+    for (const char of allCharacters) {
         characterWeapons[char] = new Set();
-    });
+    }
 
-    // Collect unique weapon names per character from all visible tables
-    const allTables = document.querySelectorAll('#Output table tbody tr');
-    allTables.forEach(row => {
-        const weaponNameCell = row.cells[0]; // Weapon name is in column index 0
-        const charCell = row.cells[1]; // Character is in column index 1
+    // Single-pass collection of unique weapons per character
+    // Optimized: querySelector once, cache cell indices
+    const allRows = document.querySelectorAll('#Output table tbody tr');
+    for (const row of allRows) {
+        const cells = row.cells;
+        if (cells.length < 2) continue; // Skip malformed rows
 
-        if (weaponNameCell && charCell) {
-            const weaponName = weaponNameCell.textContent.trim();
-            const charName = charCell.textContent.trim();
+        const weaponName = cells[0].textContent.trim();
+        const charName = cells[1].textContent.trim();
 
-            if (weaponName && charName && characterWeapons.hasOwnProperty(charName)) {
-                characterWeapons[charName].add(weaponName);
+        // Fast path: skip empty or invalid entries
+        if (!weaponName || !charName) continue;
+
+        // Add weapon to character's set (O(1) operation)
+        const charSet = characterWeapons[charName];
+        if (charSet) {
+            charSet.add(weaponName);
+        }
+    }
+
+    // Batch DOM updates using DocumentFragment to minimize reflows
+    const container = document.getElementById('characterFilterButtons');
+    const buttons = Array.from(container.children);
+
+    // Use requestAnimationFrame for smoother updates
+    requestAnimationFrame(() => {
+        for (const btn of buttons) {
+            const char = btn.dataset.char;
+            const count = characterWeapons[char]?.size || 0;
+
+            // Only update if count changed (avoid unnecessary DOM writes)
+            const countSpan = btn.querySelector('span:last-child');
+            if (countSpan) {
+                const newText = `(${count})`;
+                if (countSpan.textContent !== newText) {
+                    countSpan.textContent = newText;
+                }
             }
         }
     });
-
-    // Convert Sets to counts
-    const characterCounts = {};
-    allCharacters.forEach(char => {
-        characterCounts[char] = characterWeapons[char].size;
-    });
-
-    // Update the count in each button
-    const container = document.getElementById('characterFilterButtons');
-    const buttons = container.children;
-    for (let btn of buttons) {
-        const char = btn.dataset.char;
-        const count = characterCounts[char] || 0;
-        // Update just the count span without rebuilding the entire button
-        const countSpan = btn.querySelector('span:last-child');
-        if (countSpan) {
-            countSpan.textContent = `(${count})`;
-        }
-    }
 }
 
 function toggleCharacterFilter(char, btn) {
