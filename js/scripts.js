@@ -10,6 +10,18 @@ const STATUS_TABL_COL = 9;
 const MATERIA_TABL_COL = 8;
 const UNIQUE_TABL_COL = 12;
 const MAX_POT_INDEX = 6;   // Index into the maxPot for sorting
+
+// Game mechanics constants
+const HEAL_MIN_POTENCY_THRESHOLD = 25;  // Weapons below 25% healing potency are filtered
+const REGEN_TICK_INTERVAL_SEC = 3;      // Regen ticks every 3 seconds
+const REGEN_TICK_PERCENT = 15;          // Each regen tick heals 15%
+const ZERO_ATB_DISPLAY = "No Limit";    // Display text for 0 ATB cost weapons
+
+// Element name mappings (Lightning → Thunder in game data)
+const ELEMENT_NAME_OVERRIDES = {
+  'Lightning': { resist: 'Thunder', enchant: 'Thunder', materia: 'Light' }
+};
+
 let weaponDatabase = [];
 let filterCounts = {}; // Store pre-calculated counts
 
@@ -236,8 +248,8 @@ function readDatabase(callback) {
                 weapData.push({ name: 'condition3', value: row[i][m] }); m += 15;
                 weapData.push({ name: 'effect1Range', value: row[i][m] }); m++;
 
-                if (row[i][m] == 0) {
-                    weapData.push({ name: 'uses', value: "No Limit" });
+                if (row[i][m] == 0 || row[i][m] == '0') {
+                    weapData.push({ name: 'uses', value: ZERO_ATB_DISPLAY });
                 }
                 else {
                     weapData.push({ name: 'uses', value: row[i][m] });
@@ -657,10 +669,12 @@ function printElemWeapon(elem) {
 
         let elemResist, elemEnchant, elemMateria;
 
-        if (elem == "Lightning") {
-            elemResist = "[Resist] Thunder"; // For whatever reseaon, Lightning resist is listed as "[Resist] Thunder";
-            elemEnchant = "[Enchant] Thunder";
-            elemMateria = "Light";
+        // Check if element has name overrides (e.g., Lightning → Thunder in game data)
+        const elementOverride = ELEMENT_NAME_OVERRIDES[elem];
+        if (elementOverride) {
+            elemResist = "[Resist] " + elementOverride.resist;
+            elemEnchant = "[Enchant] " + elementOverride.enchant;
+            elemMateria = elementOverride.materia;
         }
         else {
             elemResist = "[Resist] " + elem;
@@ -854,8 +868,8 @@ function printWeaponElem(elem, header) {
         const found = findWeaponWithProperty(weaponDatabase[i], 'element', elem);
         if (found) {
             if (elem == "Heal") {
-                // Low % heal is not worth it - set threshold at 50
-                if (parseInt(getValueFromDatabaseItem(weaponDatabase[i], "potOb10")) < 25)
+                // Low % heal is not worth it - filter below threshold
+                if (parseInt(getValueFromDatabaseItem(weaponDatabase[i], "potOb10")) < HEAL_MIN_POTENCY_THRESHOLD)
                     continue;
             }
 
@@ -1018,8 +1032,8 @@ function printRegenWeapon(header) {
                 maxPot = pot;
 
                 if (dur != 0) {
-                    // Regen is 15% per tick every 3s + initial tick for total
-                    maxPot = Math.floor(dur / 3) * 15 + pot;
+                    // Regen is REGEN_TICK_PERCENT% per tick every REGEN_TICK_INTERVAL_SEC + initial tick for total
+                    maxPot = Math.floor(dur / REGEN_TICK_INTERVAL_SEC) * REGEN_TICK_PERCENT + pot;
                 }
                 row.push(maxPot);
 
