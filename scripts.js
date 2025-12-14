@@ -5,31 +5,32 @@
 
 const FILE_NAME = 'weaponData.csv'
 const WEAP_NUM_SKIP_LINE = 1;
-const ELEM_TABL_COL = 9;   
+const ELEM_TABL_COL = 9;
 const STATUS_TABL_COL = 9;
 const MATERIA_TABL_COL = 8;
 const UNIQUE_TABL_COL = 12;
 const MAX_POT_INDEX = 6;   // Index into the maxPot for sorting
 let weaponDatabase = [];
-function ecSearch() {  document.getElementById("ecDropdown").classList.toggle("show");
-    var divToPrint = document.getElementById('Output');                       
+function ecSearch() {
+    document.getElementById("ecDropdown").classList.toggle("show");
+    var divToPrint = document.getElementById('Output');
     divToPrint.innerHTML = ''
 }
 
 /* Create a table to display the result */
 function tableCreate(user_row, user_col, list, header) {
     //body reference 
-    var body = document.getElementById('Output'); 
+    var body = document.getElementById('Output');
 
     // header
-    const h1 = document.createElement("h1"); 
+    const h1 = document.createElement("h1");
     const textNode = document.createTextNode(header);
     h1.className = "weaponHeader";
     h1.appendChild(textNode);
     body.appendChild(h1);
 
     console.log("Table Data:", list);
-  
+
     // create <table> and a <tbody>
     var tbl = document.createElement("table");
     let tblClassName;
@@ -47,8 +48,7 @@ function tableCreate(user_row, user_col, list, header) {
     else if (user_col == UNIQUE_TABL_COL) {
         tblClassName = "uniqueTable";
     }
-    else
-    {
+    else {
         tblClassName = "effectTable";
     }
     tbl.className = tblClassName + " cell-border display compact hover order-column stripe";
@@ -74,9 +74,9 @@ function tableCreate(user_row, user_col, list, header) {
                 row.appendChild(cell);
             }
             var cellText;
-            cellText = document.createTextNode(list[j][i] || ""); 
+            cellText = document.createTextNode(list[j][i] || "");
             cell.appendChild(cellText);
-            
+
         }
         if (j > 0) {
             tblBody.appendChild(row);
@@ -167,8 +167,8 @@ function sortTable(cell) {
                 swap = true;
             }
         }
-    }   
-                    
+    }
+
 }
 function readDatabase() {
     if (weaponDatabase[0] != null) {
@@ -177,13 +177,14 @@ function readDatabase() {
 
     var location = window.location.href;
     var directoryPath = location.substring(0, location.lastIndexOf("/") + 1);
-    result = loadFile(directoryPath + FILE_NAME);
+    // Add cache busting to ensure we get the latest CSV
+    result = loadFile(directoryPath + FILE_NAME + "?t=" + new Date().getTime());
 
     if (result != null) {
         // By lines
         var lines = result.split('\n');
 
-        for (var line = WEAP_NUM_SKIP_LINE; line < lines.length-1; line++) {
+        for (var line = WEAP_NUM_SKIP_LINE; line < lines.length - 1; line++) {
 
             var row = CSVToArray(lines[line], ',');
             var i = 0;
@@ -381,7 +382,7 @@ function filterProvoke() {
     printWeaponEffect("[Buff] Veil", header);
 }
 
-function filterExploitWeakness(){
+function filterExploitWeakness() {
     document.getElementById("ecDropdown").classList.toggle("show");
 
     var header = "Exploit Weakness Weapon:";
@@ -495,7 +496,7 @@ function printLimitedWeapon(elem, header) {
             row.push(atb);
 
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "element"));
- 
+
             var pot, maxPot;
 
             pot = parseInt(getValueFromDatabaseItem(weaponDatabase[i], "potOb10"));
@@ -515,8 +516,8 @@ function printLimitedWeapon(elem, header) {
             if (elem != "Heal") {
                 // @todo: Need to figure out a good way to deal with this stupid weapon
                 if ((maxPot > pot) || (getValueFromDatabaseItem(weaponDatabase[i], "name") == "Bahamut Greatsword") ||
-                    (getValueFromDatabaseItem(weaponDatabase[i], "name") == "Sabin's Claws") || 
-                    (getValueFromDatabaseItem(weaponDatabase[i], "name") == "Blade of the Worthy") || 
+                    (getValueFromDatabaseItem(weaponDatabase[i], "name") == "Sabin's Claws") ||
+                    (getValueFromDatabaseItem(weaponDatabase[i], "name") == "Blade of the Worthy") ||
                     (getValueFromDatabaseItem(weaponDatabase[i], "name") == "Umbral Blade")) {
                     // Check to see if DMG+ Condition is from Effect1 or Effect2 
                     if (findWeaponWithProperty(weaponDatabase[i], 'effect1', "DMG")) {
@@ -547,9 +548,9 @@ function printAllWeapon(elem, header) {
     elemental = [["Weapon Name", "Char", "AOE", "Type", "ATB", "Element", "Pot%", "Max%", "% per ATB", "Type", "Condition"]];
 
     for (var i = 0; i < weaponDatabase.length; i++) {
-//        var found = findWeaponWithProperty(weaponDatabase[i], 'gachaType', "L");
-//        if (found) {
-            // Make a new row and push them into the list
+        //        var found = findWeaponWithProperty(weaponDatabase[i], 'gachaType', "L");
+        //        if (found) {
+        // Make a new row and push them into the list
         let row = [];
 
         row.push(getValueFromDatabaseItem(weaponDatabase[i], "name"));
@@ -609,9 +610,9 @@ function printAllWeapon(elem, header) {
         }
 
         elemental.push(row);
-//        }
+        //        }
 
-//        elemental.sort(elementalCompare);
+        //        elemental.sort(elementalCompare);
     }
 
     tableCreate(elemental.length, elemental[0].length, elemental, header);
@@ -654,7 +655,7 @@ function printWeaponElem(elem, header) {
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect1Target"));
             }
 
-            var pot, maxPot;            
+            var pot, maxPot;
 
             pot = parseInt(getValueFromDatabaseItem(weaponDatabase[i], "potOb10"));
             row.push(pot);
@@ -706,7 +707,7 @@ function printWeaponSigil(sigil, header) {
     for (var i = 0; i < weaponDatabase.length; i++) {
         if (findWeaponWithProperty(weaponDatabase[i], 'sigil', sigil)) {
             let row = [];
-            
+
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "name"));
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "charName"));
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "range"));
@@ -782,7 +783,7 @@ function printRegenWeapon(header) {
                     row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect1Target"));
 
                     dur = parseInt(getValueFromDatabaseItem(weaponDatabase[i], "effect1Dur"));
-                    row.push(dur);               
+                    row.push(dur);
                 }
                 else {
                     row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect2Target"));
@@ -793,7 +794,7 @@ function printRegenWeapon(header) {
 
                 pot = parseInt(getValueFromDatabaseItem(weaponDatabase[i], "potOb10"));
                 row.push(pot);
-                maxPot = pot;   
+                maxPot = pot;
 
                 if (dur != 0) {
                     // Regen is 15% per tick every 3s + initial tick for total
@@ -818,7 +819,7 @@ function printRegenWeapon(header) {
 
 function printWeaponEffect(text, header) {
     readDatabase();
-    let effect = [["Name", "Char", "Type", "Elem", "ATB", "Uses", "AOE", "Target", "Pot", "Max Pot", "Duration (s)", "Condition"]];  
+    let effect = [["Name", "Char", "Type", "Elem", "ATB", "Uses", "AOE", "Target", "Pot", "Max Pot", "Duration (s)", "Condition"]];
     for (var i = 0; i < weaponDatabase.length; i++) {
         if ((found = findWeaponWithProperty(weaponDatabase[i], 'effect1', text)) || (found2 = findWeaponWithProperty(weaponDatabase[i], 'effect2', text))
             || findWeaponWithProperty(weaponDatabase[i], 'effect3', text)) {
@@ -843,14 +844,14 @@ function printWeaponEffect(text, header) {
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect2Range"));
             }
             if (found) {
-                row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect1Target"));  
+                row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect1Target"));
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect1Pot"));
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect1MaxPot"));
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect1Dur"));
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "condition1"));
             }
             else if (found2) {
-                row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect2Target"));  
+                row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect2Target"));
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect2Pot"));
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect2MaxPot"));
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect2Dur"));
@@ -946,24 +947,24 @@ function loadFile(filePath) {
 // This will parse a delimited string into an array of
 // arrays. The default delimiter is the comma, but this
 // can be overriden in the second argument.
-function CSVToArray( strData, strDelimiter ){
+function CSVToArray(strData, strDelimiter) {
     // Check to see if the delimiter is defined. If not,
     // then default to comma.
     strDelimiter = (strDelimiter || ",");
-//    console.log(strData);
+    //    console.log(strData);
     // Create a regular expression to parse the CSV values.
     var objPattern = new RegExp(
-    (
-        // Delimiters.
-        "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+        (
+            // Delimiters.
+            "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
 
-        // Quoted fields.
-        "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+            // Quoted fields.
+            "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
 
-        // Standard fields.
-        "([^\"\\" + strDelimiter + "\\r\\n]*))"
-    ),
-    "gi"
+            // Standard fields.
+            "([^\"\\" + strDelimiter + "\\r\\n]*))"
+        ),
+        "gi"
     );
 
 
@@ -978,53 +979,53 @@ function CSVToArray( strData, strDelimiter ){
 
     // Keep looping over the regular expression matches
     // until we can no longer find a match.
-    while (arrMatches = objPattern.exec( strData )){
+    while (arrMatches = objPattern.exec(strData)) {
 
-    // Get the delimiter that was found.
-    var strMatchedDelimiter = arrMatches[ 1 ];
+        // Get the delimiter that was found.
+        var strMatchedDelimiter = arrMatches[1];
 
-    // Check to see if the given delimiter has a length
-    // (is not the start of string) and if it matches
-    // field delimiter. If id does not, then we know
-    // that this delimiter is a row delimiter.
-    if (
-        strMatchedDelimiter.length &&
-        strMatchedDelimiter !== strDelimiter
-    ){
+        // Check to see if the given delimiter has a length
+        // (is not the start of string) and if it matches
+        // field delimiter. If id does not, then we know
+        // that this delimiter is a row delimiter.
+        if (
+            strMatchedDelimiter.length &&
+            strMatchedDelimiter !== strDelimiter
+        ) {
 
-        // Since we have reached a new row of data,
-        // add an empty row to our data array.
-        arrData.push( [] );
+            // Since we have reached a new row of data,
+            // add an empty row to our data array.
+            arrData.push([]);
 
-    }
+        }
 
-    var strMatchedValue;
+        var strMatchedValue;
 
-    // Now that we have our delimiter out of the way,
-    // let's check to see which kind of value we
-    // captured (quoted or unquoted).
-    if (arrMatches[ 2 ]){
+        // Now that we have our delimiter out of the way,
+        // let's check to see which kind of value we
+        // captured (quoted or unquoted).
+        if (arrMatches[2]) {
 
-        // We found a quoted value. When we capture
-        // this value, unescape any double quotes.
-        strMatchedValue = arrMatches[ 2 ].replace(
-        new RegExp( "\"\"", "g" ),
-        "\""
-        );
+            // We found a quoted value. When we capture
+            // this value, unescape any double quotes.
+            strMatchedValue = arrMatches[2].replace(
+                new RegExp("\"\"", "g"),
+                "\""
+            );
 
-    } else {
+        } else {
 
-        // We found a non-quoted value.
-        strMatchedValue = arrMatches[ 3 ];
+            // We found a non-quoted value.
+            strMatchedValue = arrMatches[3];
 
-    }
+        }
 
 
-    // Now that we have our value string, let's add
-    // it to the data array.
-    arrData[ arrData.length - 1 ].push( strMatchedValue );
+        // Now that we have our value string, let's add
+        // it to the data array.
+        arrData[arrData.length - 1].push(strMatchedValue);
     }
 
     // Return the parsed data.
-    return( arrData );
+    return (arrData);
 }
