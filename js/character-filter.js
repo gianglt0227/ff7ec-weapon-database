@@ -37,19 +37,23 @@ function populateCharacterFilter(dataList) {
     const container = document.getElementById('characterFilterButtons');
     container.innerHTML = '';
 
-    // Count weapons per character from current displayed table data only
+    // Count weapons per character from ALL currently displayed tables
     const characterCounts = {};
     sortedChars.forEach(char => {
         characterCounts[char] = 0;
     });
 
-    // Count from current table data (filtered results)
-    for (let i = 1; i < dataList.length; i++) {
-        const charName = dataList[i][1];
-        if (charName && characterCounts.hasOwnProperty(charName.trim())) {
-            characterCounts[charName.trim()]++;
+    // Count from all tables currently visible in the Output div
+    const tables = document.querySelectorAll('#Output table tbody tr');
+    tables.forEach(row => {
+        const charCell = row.cells[1]; // Character is in column index 1
+        if (charCell) {
+            const charName = charCell.textContent.trim();
+            if (charName && characterCounts.hasOwnProperty(charName)) {
+                characterCounts[charName]++;
+            }
         }
-    }
+    });
 
     // If state is empty (first run), select all
     const isFirstRun = characterFilterState.size === 0;
