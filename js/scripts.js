@@ -501,35 +501,24 @@ function filterByElement(element) {
     printElemWeapon(element);
 }
 
-// Element filters - consolidated
-function filterFire() {
-    filterByElement("Fire");
-}
-function filterIce() {
-    filterByElement("Ice");
-}
-function filterLightning() {
-    filterByElement("Lightning");
-}
-function filterWater() {
-    filterByElement("Water");
-}
-function filterWind() {
-    filterByElement("Wind");
-}
-function filterEarth() {
-    filterByElement("Earth");
-}
-function filterNonElem() {
-    filterByElement("None");
-}
-
-function filterLimited() {
-    printLimitedWeapon("", "Limited/Crossover Weapons:");
-}
+/**
+ * FILTER FUNCTIONS - Moved to filter-registry.js
+ *
+ * All 27+ filter functions (filterFire, filterIce, filterHeal, etc.) have been
+ * consolidated into a configuration-driven system in js/filter-registry.js.
+ *
+ * Benefits:
+ * - Reduces code duplication (~150 lines eliminated)
+ * - Easier to add new filters (just add config entry)
+ * - Centralized filter logic and parameters
+ * - Auto-generates global functions for onclick handlers
+ *
+ * See: js/filter-registry.js for filter configurations
+ */
 
 /**
  * Filter weapons by stat effect (debuff or buff)
+ * Helper function used by filter-registry.js
  * @param {string} effectName - Effect name like '[Debuff] MATK'
  * @param {string} header - Display header for the table
  */
@@ -537,118 +526,14 @@ function filterStatEffect(effectName, header) {
     executeFilter(printWeaponEffect, effectName, header);
 }
 
-// Stat debuff filters - consolidated
-function filterMatkDown() {
-    filterStatEffect("[Debuff] MATK", "Weapon with [Debuff] MATK:");
-}
-function filterPatkDown() {
-    filterStatEffect("[Debuff] PATK", "Weapon with [Debuff] PATK:");
-}
-function filterPdefDown() {
-    filterStatEffect("[Debuff] PDEF", "Weapon with [Debuff] PDEF:");
-}
-function filterMdefDown() {
-    filterStatEffect("[Debuff] MDEF", "Weapon with [Debuff] MDEF:");
-}
-
-// Stat buff filters - consolidated
-function filterPatkUp() {
-    filterStatEffect("[Buff] PATK", "Weapon with [Buff] PATK:");
-}
-function filterMatkUp() {
-    filterStatEffect("[Buff] MATK", "Weapon with [Buff] MATK:");
-}
-function filterPdefUp() {
-    filterStatEffect("[Buff] PDEF", "Weapon with [Buff] PDEF:");
-}
-function filterMdefUp() {
-    filterStatEffect("[Buff] MDEF", "Weapon with [Buff] MDEF:");
-}
-
-function filterHeal() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-
-        let header = "Non-Regen Healing Weapon (> 25% Potency):";
-        printWeaponElem("Heal", header);
-
-        header = "Regen Healing Weapon:";
-        printRegenWeapon(header);
-
-        header = "Weapon with All (Cure) Materia Slot:";
-        printWeaponMateria("All (Cure)", header);
-    });
-}
-function filterProvoke() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-
-        let header = "Provoke Weapon:";
-        printWeaponEffect("[Buff] Provoke", header);
-
-        header = "Veil Weapon:";
-        printWeaponEffect("[Buff] Veil", header);
-    });
-}
-
-// Simple single-effect filter - consolidated
-function filterExploitWeakness() {
-    filterStatEffect("[Buff] Weakness", "Exploit Weakness Weapon:");
-}
-
 /**
  * Filter weapons by materia slot sigil
+ * Helper function used by filter-registry.js
  * @param {string} materiaType - Materia type (Circle, Triangle, X Sigil)
  * @param {string} header - Display header for the table
  */
 function filterMateriaSlot(materiaType, header) {
     executeFilter(printWeaponMateria, materiaType, header);
-}
-
-// Materia slot filters - consolidated
-function filterCircleSigilMateria() {
-    filterMateriaSlot("Circle", "Weapon with ◯ Sigil Materia Slot:");
-}
-
-function filterTriangleSigilMateria() {
-    filterMateriaSlot("Triangle", "Weapon with △ Sigil Materia Slot:");
-}
-
-function filterXSigilMateria() {
-    filterMateriaSlot("X Sigil", "Weapon with ✕ Sigil Materia Slot:");
-}
-
-function filterDiamondMateria() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with ◊ Sigil:";
-        printWeaponSigil("Diamond", header);
-    });
-}
-
-function filterUniqueEffect() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-
-        let header = "Weapon Applying Status:";
-        printWeaponUniqueEffect("[Status Apply]", header);
-
-        header = "Weapon Removing Status:";
-        printWeaponUniqueEffect("[Status Cleanse]", header);
-
-        header = "Weapon with Dispel Effect:";
-        printWeaponUniqueEffect("[Dispel", header);
-
-        header = "Weapon with Haste Effect:";
-        printWeaponEffect("Haste", header);
-
-        header = "Weapon with Increase Command Gauge Effect:";
-        printWeaponEffect("Increases Command Gauge", header);
-    });
 }
 
 function filterAll() {
