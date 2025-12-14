@@ -43,11 +43,11 @@ const CSV_COLUMN_MAP = {
     condition2: 30,
     condition3: 31,
     // Skip 15 columns (32-46 reserved/unused)
-    effect1Range: 47,
-    uses: 48,
-    // id: 49 (skipped)
-    gachaType: 50,
-    effect2Range: 51
+    effect1Range: 46,
+    uses: 47,
+    // id: 48 (skipped)
+    gachaType: 49,
+    effect2Range: 50
 };
 
 /**
