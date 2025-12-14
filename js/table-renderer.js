@@ -57,12 +57,12 @@ function tableCreate(user_row, user_col, list, header) {
             // HEADER ROW
             if (j == 0) {
                 cell = document.createElement("th");
-                cell.className = "px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:text-primary group select-none";
-                cell.onclick = function () { sortTable(this); };
+                cell.className = "px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider";
+                // Removed legacy sortTable() onclick - DataTables handles sorting
 
-                // Add sort icon visual
+                // Plain header content (DataTables adds its own sort indicators)
                 let content = list[j][i] || "";
-                cell.innerHTML = `<div class="flex items-center gap-1">${content} <span class="material-symbols-outlined text-sm opacity-50 group-hover:opacity-100">sort</span></div>`;
+                cell.textContent = content;
 
                 headerRow.appendChild(cell);
             }

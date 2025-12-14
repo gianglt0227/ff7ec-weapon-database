@@ -170,77 +170,92 @@ function sortTable(cell) {
     }
 
 }
-function readDatabase() {
+function readDatabase(callback) {
+    // If already loaded, execute callback immediately
     if (weaponDatabase[0] != null) {
+        if (callback) callback();
         return;
     }
+
+    // Show loading spinner
+    showLoadingSpinner('Loading weapon database...');
 
     var location = window.location.href;
     var directoryPath = location.substring(0, location.lastIndexOf("/") + 1);
     // Add cache busting to ensure we get the latest CSV
-    result = loadFile(directoryPath + FILE_NAME + "?t=" + new Date().getTime());
-
-    if (result != null) {
-        // By lines
-        var lines = result.split('\n');
-
-        for (var line = WEAP_NUM_SKIP_LINE; line < lines.length - 1; line++) {
-
-            var row = CSVToArray(lines[line], ',');
-            var i = 0;
-            let weapData = [];
-            weapData.push({ name: 'name', value: row[i][0] });
-            weapData.push({ name: 'charName', value: row[i][1] });
-            weapData.push({ name: 'sigil', value: row[i][2] });
-            weapData.push({ name: 'atb', value: row[i][3] });
-            weapData.push({ name: 'type', value: row[i][4] });    // dmg type
-            weapData.push({ name: 'element', value: row[i][5] });
-            weapData.push({ name: 'range', value: row[i][6] });
-            weapData.push({ name: 'effect1Target', value: row[i][7] });
-            weapData.push({ name: 'effect1', value: row[i][8] });
-            weapData.push({ name: 'effect1Pot', value: row[i][9] });
-            weapData.push({ name: 'effect1MaxPot', value: row[i][10] });
-            weapData.push({ name: 'effect2Target', value: row[i][11] });
-            weapData.push({ name: 'effect2', value: row[i][12] });
-            weapData.push({ name: 'effect2Pot', value: row[i][13] });
-            weapData.push({ name: 'effect2MaxPot', value: row[i][14] });
-            var m = 15;
-            weapData.push({ name: 'effect3Target', value: row[i][m] }); m++;
-            weapData.push({ name: 'effect3', value: row[i][m] }); m++;
-            weapData.push({ name: 'effect3Pot', value: row[i][m] }); m++;
-            weapData.push({ name: 'effect3MaxPot', value: row[i][m] }); m++;
-            weapData.push({ name: 'support1', value: row[i][m] }); m++;
-            weapData.push({ name: 'support2', value: row[i][m] }); m++;
-            weapData.push({ name: 'support3', value: row[i][m] }); m++;
-            weapData.push({ name: 'rAbility1', value: row[i][m] }); m++;
-            weapData.push({ name: 'rAbility2', value: row[i][m] }); m++;
-            weapData.push({ name: 'potOb10', value: row[i][m] }); m++;
-            weapData.push({ name: 'maxPotOb10', value: row[i][m] }); m++;
-            weapData.push({ name: 'effect1Dur', value: row[i][m] }); m++;
-            weapData.push({ name: 'effect2Dur', value: row[i][m] }); m++;
-            weapData.push({ name: 'effect3Dur', value: row[i][m] }); m++;
-            weapData.push({ name: 'condition1', value: row[i][m] }); m++;
-            weapData.push({ name: 'condition2', value: row[i][m] }); m++;
-            weapData.push({ name: 'condition3', value: row[i][m] }); m += 15;
-            weapData.push({ name: 'effect1Range', value: row[i][m] }); m++;
-
-            if (row[i][m] == 0) {
-                weapData.push({ name: 'uses', value: "No Limit" });
-            }
-            else {
-                weapData.push({ name: 'uses', value: row[i][m] });
-            }
-            m++;
-            m++; // id
-
-            weapData.push({ name: 'gachaType', value: row[i][m] }); m++;
-            weapData.push({ name: 'effect2Range', value: row[i][m] }); m++;
-
-
-            weaponDatabase.push(weapData);
-            // console.log(weapData);
+    loadFile(directoryPath + FILE_NAME + "?t=" + new Date().getTime(), function(result, error) {
+        if (error) {
+            showLoadingError(error);
+            console.error('Database load error:', error);
+            return;
         }
-    }
+
+        if (result != null) {
+            // By lines
+            var lines = result.split('\n');
+
+            for (var line = WEAP_NUM_SKIP_LINE; line < lines.length - 1; line++) {
+
+                var row = CSVToArray(lines[line], ',');
+                var i = 0;
+                let weapData = [];
+                weapData.push({ name: 'name', value: row[i][0] });
+                weapData.push({ name: 'charName', value: row[i][1] });
+                weapData.push({ name: 'sigil', value: row[i][2] });
+                weapData.push({ name: 'atb', value: row[i][3] });
+                weapData.push({ name: 'type', value: row[i][4] });    // dmg type
+                weapData.push({ name: 'element', value: row[i][5] });
+                weapData.push({ name: 'range', value: row[i][6] });
+                weapData.push({ name: 'effect1Target', value: row[i][7] });
+                weapData.push({ name: 'effect1', value: row[i][8] });
+                weapData.push({ name: 'effect1Pot', value: row[i][9] });
+                weapData.push({ name: 'effect1MaxPot', value: row[i][10] });
+                weapData.push({ name: 'effect2Target', value: row[i][11] });
+                weapData.push({ name: 'effect2', value: row[i][12] });
+                weapData.push({ name: 'effect2Pot', value: row[i][13] });
+                weapData.push({ name: 'effect2MaxPot', value: row[i][14] });
+                var m = 15;
+                weapData.push({ name: 'effect3Target', value: row[i][m] }); m++;
+                weapData.push({ name: 'effect3', value: row[i][m] }); m++;
+                weapData.push({ name: 'effect3Pot', value: row[i][m] }); m++;
+                weapData.push({ name: 'effect3MaxPot', value: row[i][m] }); m++;
+                weapData.push({ name: 'support1', value: row[i][m] }); m++;
+                weapData.push({ name: 'support2', value: row[i][m] }); m++;
+                weapData.push({ name: 'support3', value: row[i][m] }); m++;
+                weapData.push({ name: 'rAbility1', value: row[i][m] }); m++;
+                weapData.push({ name: 'rAbility2', value: row[i][m] }); m++;
+                weapData.push({ name: 'potOb10', value: row[i][m] }); m++;
+                weapData.push({ name: 'maxPotOb10', value: row[i][m] }); m++;
+                weapData.push({ name: 'effect1Dur', value: row[i][m] }); m++;
+                weapData.push({ name: 'effect2Dur', value: row[i][m] }); m++;
+                weapData.push({ name: 'effect3Dur', value: row[i][m] }); m++;
+                weapData.push({ name: 'condition1', value: row[i][m] }); m++;
+                weapData.push({ name: 'condition2', value: row[i][m] }); m++;
+                weapData.push({ name: 'condition3', value: row[i][m] }); m += 15;
+                weapData.push({ name: 'effect1Range', value: row[i][m] }); m++;
+
+                if (row[i][m] == 0) {
+                    weapData.push({ name: 'uses', value: "No Limit" });
+                }
+                else {
+                    weapData.push({ name: 'uses', value: row[i][m] });
+                }
+                m++;
+                m++; // id
+
+                weapData.push({ name: 'gachaType', value: row[i][m] }); m++;
+                weapData.push({ name: 'effect2Range', value: row[i][m] }); m++;
+
+
+                weaponDatabase.push(weapData);
+                // console.log(weapData);
+            }
+        }
+
+        // Hide loading spinner and execute callback
+        hideLoadingSpinner();
+        if (callback) callback();
+    });
 }
 
 // Find elements in an array
@@ -309,60 +324,43 @@ function filterLimited() {
 }
 
 /* I should clean this up and make only 1 function calling into all of these filters... */
+/* Dropdown toggle removed from all filter functions - dropdown now stays open for multiple selections */
 function filterMatkDown() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with [Debuff] MATK:";
     printWeaponEffect("[Debuff] MATK", header);
 }
 function filterPatkDown() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with [Debuff] PATK:";
     printWeaponEffect("[Debuff] PATK", header);
 }
 function filterPdefDown() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with [Debuff] PDEF:";
     printWeaponEffect("[Debuff] PDEF", header);
 }
 function filterMdefDown() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with [Debuff] MDEF:";
     printWeaponEffect("[Debuff] MDEF", header);
 }
 
 function filterPatkUp() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with [Buff] PATK:";
     printWeaponEffect("[Buff] PATK", header);
 }
 function filterMatkUp() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with [Buff] MATK:";
     printWeaponEffect("[Buff] MATK", header);
 }
 
 function filterPdefUp() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with [Buff] PDEF:";
     printWeaponEffect("[Buff] PDEF", header);
 }
 function filterMdefUp() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with [Buff] MDEF:";
     printWeaponEffect("[Buff] MDEF", header);
 }
 
 function filterHeal() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Non-Regen Healing Weapon (> 25% Potency):";
     printWeaponElem("Heal", header);
 
@@ -373,8 +371,6 @@ function filterHeal() {
     printWeaponMateria("All (Cure)", header);
 }
 function filterProvoke() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Provoke Weapon:";
     printWeaponEffect("[Buff] Provoke", header);
 
@@ -383,44 +379,32 @@ function filterProvoke() {
 }
 
 function filterExploitWeakness() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Exploit Weakness Weapon:";
     printWeaponEffect("[Buff] Weakness", header);
 }
 
 function filterCircleSigilMateria() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with ◯ Sigil Materia Slot:";
     printWeaponMateria("Circle", header);
 }
 
 
 function filterTriangleSigilMateria() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with △ Sigil Materia Slot:";
     printWeaponMateria("Triangle", header);
 }
 
 function filterXSigilMateria() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with ✕ Sigil Materia Slot:";
     printWeaponMateria("X Sigil", header);
 }
 
 function filterDiamondMateria() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon with ◊ Sigil:";
     printWeaponSigil("Diamond", header);
 }
 
 function filterUniqueEffect() {
-    document.getElementById("ecDropdown").classList.toggle("show");
-
     var header = "Weapon Applying Status:";
     printWeaponUniqueEffect("[Status Apply]", header);
 
@@ -446,39 +430,41 @@ function filterAll() {
 }
 
 function printElemWeapon(elem) {
-    document.getElementById("ecDropdown").classList.toggle("show");
-    var elemResist, elemEnchant, elemMateria;
+    // Removed dropdown toggle - dropdown now stays open for multiple filter selections
+    readDatabase(function() {
+        var elemResist, elemEnchant, elemMateria;
 
-    if (elem == "Lightning") {
-        elemResist = "[Resist] Thunder"; // For whatever reseaon, Lightning resist is listed as "[Resist] Thunder";
-        elemEnchant = "[Enchant] Thunder";
-        elemMateria = "Light";
-    }
-    else {
-        elemResist = "[Resist] " + elem;
-        elemEnchant = "[Enchant] " + elem;
-        elemMateria = elem;
-    }
+        if (elem == "Lightning") {
+            elemResist = "[Resist] Thunder"; // For whatever reseaon, Lightning resist is listed as "[Resist] Thunder";
+            elemEnchant = "[Enchant] Thunder";
+            elemMateria = "Light";
+        }
+        else {
+            elemResist = "[Resist] " + elem;
+            elemEnchant = "[Enchant] " + elem;
+            elemMateria = elem;
+        }
 
-    var header = "Weapon with C-Abilities - " + elem;
-    printWeaponElem(elem, header);
+        var header = "Weapon with C-Abilities - " + elem;
+        printWeaponElem(elem, header);
 
-    if (elem != "None") {
-        header = "Weapon with [Debuff] " + elem + " Resist Down:";
-        printWeaponEffect(elemResist, header);
+        if (elem != "None") {
+            header = "Weapon with [Debuff] " + elem + " Resist Down:";
+            printWeaponEffect(elemResist, header);
 
-        header = "Weapon with [Buff] " + elem + " Damage Up:";
-        printWeaponEffect(elemEnchant, header);
+            header = "Weapon with [Buff] " + elem + " Damage Up:";
+            printWeaponEffect(elemEnchant, header);
 
-        header = "Weapon with " + elem + " Materia Slot:";
-        printWeaponMateria(elemMateria, header);
-    }
+            header = "Weapon with " + elem + " Materia Slot:";
+            printWeaponMateria(elemMateria, header);
+        }
+    });
 }
 
 function printLimitedWeapon(elem, header) {
-    document.getElementById("ecDropdown").classList.toggle("show");
-    readDatabase();
-    let elemental;
+    // Removed dropdown toggle - dropdown now stays open for multiple filter selections
+    readDatabase(function() {
+        let elemental;
     elemental = [["Weapon Name", "Char", "AOE", "Type", "ATB", "Element", "Pot%", "Max%", "% per ATB", "Condition"]];
 
     for (var i = 0; i < weaponDatabase.length; i++) {
@@ -538,13 +524,14 @@ function printLimitedWeapon(elem, header) {
         elemental.sort(elementalCompare);
     }
 
-    tableCreate(elemental.length, elemental[0].length, elemental, header);
+        tableCreate(elemental.length, elemental[0].length, elemental, header);
+    });
 }
 
 function printAllWeapon(elem, header) {
-    document.getElementById("ecDropdown").classList.toggle("show");
-    readDatabase();
-    let elemental;
+    // Removed dropdown toggle - dropdown now stays open for multiple filter selections
+    readDatabase(function() {
+        let elemental;
     elemental = [["Weapon Name", "Char", "AOE", "Type", "ATB", "Element", "Pot%", "Max%", "% per ATB", "Type", "Condition"]];
 
     for (var i = 0; i < weaponDatabase.length; i++) {
@@ -615,12 +602,13 @@ function printAllWeapon(elem, header) {
         //        elemental.sort(elementalCompare);
     }
 
-    tableCreate(elemental.length, elemental[0].length, elemental, header);
+        tableCreate(elemental.length, elemental[0].length, elemental, header);
+    });
 }
 
 
 function printWeaponElem(elem, header) {
-    readDatabase();
+    readDatabase(function() {
     let elemental;
     if (elem != "Heal") {
         elemental = [["Weapon Name", "Char", "AOE", "Type", "ATB", "Uses", "Pot%", "Max%", "% per ATB", "Condition"]];
@@ -696,12 +684,13 @@ function printWeaponElem(elem, header) {
         elemental.sort(elementalCompare);
     }
 
-    tableCreate(elemental.length, elemental[0].length, elemental, header);
+        tableCreate(elemental.length, elemental[0].length, elemental, header);
+    });
 }
 
 
 function printWeaponSigil(sigil, header) {
-    readDatabase();
+    readDatabase(function() {
     let materia = [["Weapon Name", "Char", "AOE", "Type", "Elem", "ATB", "Uses", "Pot%", "Max%"]];
 
     for (var i = 0; i < weaponDatabase.length; i++) {
@@ -722,10 +711,11 @@ function printWeaponSigil(sigil, header) {
         }
     }
 
-    tableCreate(materia.length, materia[0].length, materia, header);
+        tableCreate(materia.length, materia[0].length, materia, header);
+    });
 }
 function printWeaponMateria(elemMateria, header) {
-    readDatabase();
+    readDatabase(function() {
     let materia = [["Weapon Name", "Char", "AOE", "Type", "Elem", "ATB", "Uses", "Pot%", "Max%"]];
 
     for (var i = 0; i < weaponDatabase.length; i++) {
@@ -748,11 +738,12 @@ function printWeaponMateria(elemMateria, header) {
         }
     }
 
-    tableCreate(materia.length, materia[0].length, materia, header);
+        tableCreate(materia.length, materia[0].length, materia, header);
+    });
 }
 
 function printRegenWeapon(header) {
-    readDatabase();
+    readDatabase(function() {
     let effect = [["Name", "Char", "Type", "ATB", "Uses", "AOE", "Target", "Duration (s)", "Pot%", "Max%", "% per ATB"]];
     var text = "Regen";
 
@@ -814,11 +805,12 @@ function printRegenWeapon(header) {
         }
     }
 
-    tableCreate(effect.length, effect[0].length, effect, header);
+        tableCreate(effect.length, effect[0].length, effect, header);
+    });
 }
 
 function printWeaponEffect(text, header) {
-    readDatabase();
+    readDatabase(function() {
     let effect = [["Name", "Char", "Type", "Elem", "ATB", "Uses", "AOE", "Target", "Pot", "Max Pot", "Duration (s)", "Condition"]];
     for (var i = 0; i < weaponDatabase.length; i++) {
         if ((found = findWeaponWithProperty(weaponDatabase[i], 'effect1', text)) || (found2 = findWeaponWithProperty(weaponDatabase[i], 'effect2', text))
@@ -869,11 +861,12 @@ function printWeaponEffect(text, header) {
         }
     }
 
-    tableCreate(effect.length, effect[0].length, effect, header);
+        tableCreate(effect.length, effect[0].length, effect, header);
+    });
 }
 
 function printWeaponUniqueEffect(text, header) {
-    readDatabase();
+    readDatabase(function() {
     let effect = [["Name", "Char", "AOE", "Type", "Elem", "ATB", "Uses", "Target1", "Effect1", "Condition1", "Target2", "Effect2", "Condition2"]];
 
     for (var i = 0; i < weaponDatabase.length; i++) {
@@ -927,19 +920,25 @@ function printWeaponUniqueEffect(text, header) {
         }
     }
 
-    tableCreate(effect.length, effect[0].length, effect, header);
+        tableCreate(effect.length, effect[0].length, effect, header);
+    });
 }
 
-// Load file from local server
-function loadFile(filePath) {
-    var result = null;
+// Load file from local server (async version)
+function loadFile(filePath, callback) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath, false);
+    xmlhttp.open("GET", filePath, true); // Changed to async (true)
+    xmlhttp.onload = function() {
+        if (xmlhttp.status == 200) {
+            callback(xmlhttp.responseText, null);
+        } else {
+            callback(null, 'Failed to load file: HTTP ' + xmlhttp.status);
+        }
+    };
+    xmlhttp.onerror = function() {
+        callback(null, 'Network error occurred');
+    };
     xmlhttp.send();
-    if (xmlhttp.status == 200) {
-        result = xmlhttp.responseText;
-    }
-    return result;
 }
 
 

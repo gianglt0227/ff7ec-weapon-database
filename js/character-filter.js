@@ -57,8 +57,10 @@ function populateCharacterFilter(dataList) {
         container.appendChild(btn);
     });
 
-    // Show container
-    document.getElementById('characterFilterContainer').classList.remove('hidden');
+    // Hide empty state and show buttons + actions
+    document.getElementById('characterFilterEmpty').classList.add('hidden');
+    document.getElementById('characterFilterButtons').classList.remove('hidden');
+    document.getElementById('characterFilterActions').classList.remove('hidden');
 }
 
 function toggleCharacterFilter(char, btn) {

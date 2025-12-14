@@ -18,6 +18,9 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
 
+    <!-- Theme Manager (loads early to prevent flash) -->
+    <script src="js/theme-manager.js"></script>
+
     <!-- Logic Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
@@ -41,9 +44,9 @@
             <div class="flex items-center gap-4">
                 <button aria-label="Toggle theme"
                     class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    onclick="document.documentElement.classList.toggle('dark')">
-                    <span class="material-symbols-outlined dark:hidden text-gray-600">dark_mode</span>
-                    <span class="material-symbols-outlined hidden dark:block text-yellow-400">light_mode</span>
+                    onclick="toggleTheme()">
+                    <span class="material-symbols-outlined text-gray-600" data-theme-icon="dark">dark_mode</span>
+                    <span class="material-symbols-outlined text-yellow-400" data-theme-icon="light">light_mode</span>
                 </button>
             </div>
         </div>
@@ -72,6 +75,15 @@
                 <!-- We add class "dropdown-content" if scripts.js uses it for styling, but mainly we need the ID -->
                 <div class="absolute left-0 right-0 z-50 mt-2 w-full origin-top rounded-xl bg-card-light dark:bg-card-dark shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none fade-in border border-gray-100 dark:border-gray-700 overflow-hidden dropdown-content"
                     id="ecDropdown">
+                    <!-- Close button header -->
+                    <div class="sticky top-0 z-20 px-4 py-3 bg-card-light dark:bg-card-dark border-b border-gray-200 dark:border-gray-700 flex items-center justify-between backdrop-blur-sm">
+                        <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Filter Weapons</span>
+                        <button onclick="closeDropdown()"
+                                class="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors">
+                            <span class="material-symbols-outlined text-sm">close</span>
+                            Close
+                        </button>
+                    </div>
                     <div class="max-h-[60vh] overflow-y-auto" id="searchDropdownContent">
 
                         <!-- Header: Elements -->
@@ -276,14 +288,14 @@
 
         <!-- Character Filter Section -->
         <div id="characterFilterContainer"
-            class="hidden mb-6 bg-card-light dark:bg-card-dark rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-4 fade-in">
+            class="mb-6 bg-card-light dark:bg-card-dark rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-4 fade-in">
             <div class="flex items-center justify-between mb-3">
                 <h3
                     class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">filter_alt</span>
-                    Filter by Character (All are selected by default)
+                    Filter by Character
                 </h3>
-                <div class="flex gap-2">
+                <div id="characterFilterActions" class="flex gap-2 hidden">
                     <button onclick="selectAllCharacters()"
                         class="text-xs text-primary hover:text-primary-dark font-medium transition-colors">Select
                         All</button>
@@ -292,7 +304,12 @@
                         class="text-xs text-text-muted-light dark:text-text-muted-dark hover:text-gray-900 dark:hover:text-gray-100 font-medium transition-colors">Clear</button>
                 </div>
             </div>
-            <div id="characterFilterButtons" class="flex flex-wrap gap-2">
+            <div id="characterFilterEmpty" class="py-8 text-center">
+                <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-4xl mb-3">person_search</span>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Character filter will appear after running your first search</p>
+                <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Try selecting a weapon type from the dropdown above</p>
+            </div>
+            <div id="characterFilterButtons" class="flex flex-wrap gap-2 hidden">
                 <!-- Buttons will be injected here -->
             </div>
         </div>
@@ -331,6 +348,7 @@
             </div>
         </div>
     </footer>
+    <script src="js/loading-state.js"></script>
     <script src="js/character-filter.js"></script>
     <script src="js/table-renderer.js"></script>
     <script defer src="js/ui-dropdown.js"></script>
