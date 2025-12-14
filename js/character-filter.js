@@ -3,6 +3,7 @@
 
 const characterFilterState = new Set(); // Stores checked characters
 let allCharacters = [];
+let updateCountsTimeout = null; // Debounce timer for count updates
 
 function populateCharacterFilter(dataList) {
     // Extract unique characters from the provided dataList (table data)
@@ -28,40 +29,25 @@ function populateCharacterFilter(dataList) {
 
     const sortedChars = Array.from(charSet).sort();
 
-    // Only rebuild if we found new characters or it's empty
-    if (allCharacters.length === sortedChars.length && allCharacters.every((v, i) => v === sortedChars[i])) {
-        return; // No change
+    // Check if we need to rebuild buttons (new characters found)
+    const needsRebuild = allCharacters.length !== sortedChars.length ||
+                        !allCharacters.every((v, i) => v === sortedChars[i]);
+
+    if (needsRebuild) {
+        allCharacters = sortedChars;
+        rebuildCharacterButtons();
     }
 
-    allCharacters = sortedChars;
+    // Always update counts after a short delay (debounced to handle multiple table renders)
+    clearTimeout(updateCountsTimeout);
+    updateCountsTimeout = setTimeout(() => {
+        updateCharacterCounts();
+    }, 100);
+}
+
+function rebuildCharacterButtons() {
     const container = document.getElementById('characterFilterButtons');
     container.innerHTML = '';
-
-    // Count weapons per character from current table data AND existing tables
-    const characterCounts = {};
-    sortedChars.forEach(char => {
-        characterCounts[char] = 0;
-    });
-
-    // First, count from the new dataList being added (skip header row at index 0)
-    for (let i = 1; i < dataList.length; i++) {
-        const charName = dataList[i][1];
-        if (charName && characterCounts.hasOwnProperty(charName.trim())) {
-            characterCounts[charName.trim()]++;
-        }
-    }
-
-    // Then, add counts from any existing tables already in the DOM
-    const existingTables = document.querySelectorAll('#Output table tbody tr');
-    existingTables.forEach(row => {
-        const charCell = row.cells[1]; // Character is in column index 1
-        if (charCell) {
-            const charName = charCell.textContent.trim();
-            if (charName && characterCounts.hasOwnProperty(charName)) {
-                characterCounts[charName]++;
-            }
-        }
-    });
 
     // If state is empty (first run), select all
     const isFirstRun = characterFilterState.size === 0;
@@ -71,17 +57,14 @@ function populateCharacterFilter(dataList) {
 
         const btn = document.createElement('button');
         btn.type = 'button';
-        // Base classes
         btn.className = `px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border select-none ${characterFilterState.has(char)
             ? 'bg-primary/10 border-primary text-primary-dark dark:text-primary ring-1 ring-primary/20'
             : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
             }`;
 
-        // Add character name and count badge
-        const count = characterCounts[char] || 0;
         btn.innerHTML = `
             <span>${char}</span>
-            <span class="ml-1.5 opacity-60 text-[10px]">(${count})</span>
+            <span class="ml-1.5 opacity-60 text-[10px]">(0)</span>
         `;
         btn.dataset.char = char;
 
@@ -93,6 +76,39 @@ function populateCharacterFilter(dataList) {
     document.getElementById('characterFilterEmpty').classList.add('hidden');
     document.getElementById('characterFilterButtons').classList.remove('hidden');
     document.getElementById('characterFilterActions').classList.remove('hidden');
+}
+
+function updateCharacterCounts() {
+    // Count weapons per character from ALL tables currently in DOM
+    const characterCounts = {};
+    allCharacters.forEach(char => {
+        characterCounts[char] = 0;
+    });
+
+    // Count from all visible tables in the Output div
+    const allTables = document.querySelectorAll('#Output table tbody tr');
+    allTables.forEach(row => {
+        const charCell = row.cells[1]; // Character is in column index 1
+        if (charCell) {
+            const charName = charCell.textContent.trim();
+            if (charName && characterCounts.hasOwnProperty(charName)) {
+                characterCounts[charName]++;
+            }
+        }
+    });
+
+    // Update the count in each button
+    const container = document.getElementById('characterFilterButtons');
+    const buttons = container.children;
+    for (let btn of buttons) {
+        const char = btn.dataset.char;
+        const count = characterCounts[char] || 0;
+        // Update just the count span without rebuilding the entire button
+        const countSpan = btn.querySelector('span:last-child');
+        if (countSpan) {
+            countSpan.textContent = `(${count})`;
+        }
+    }
 }
 
 function toggleCharacterFilter(char, btn) {
