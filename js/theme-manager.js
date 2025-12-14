@@ -5,15 +5,16 @@
 
 /**
  * Initialize theme on page load
- * Respects user's saved preference or system preference
+ * Defaults to light mode unless user has explicitly saved dark mode preference
  */
 function initializeTheme() {
     const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+    // Only apply dark mode if user explicitly saved it
+    if (savedTheme === 'dark') {
         document.documentElement.classList.add('dark');
     } else {
+        // Default to light mode
         document.documentElement.classList.remove('dark');
     }
 }
