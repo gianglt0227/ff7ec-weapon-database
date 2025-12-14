@@ -83,3 +83,6 @@ ehthumbs_vista.db
 
 # Optional: Include if you have local development server files
 # .http-server/
+
+# Build output
+dist/

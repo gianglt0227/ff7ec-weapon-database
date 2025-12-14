@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
 
     <!-- Modern Styles -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link rel="stylesheet" href="dist/output.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap"
         rel="stylesheet" />
@@ -23,135 +23,8 @@
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="scripts.js"></script>
 
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#10B981",
-                        "primary-dark": "#059669",
-                        "background-light": "#FFF7ED",
-                        "background-dark": "#18181B",
-                        "card-light": "#FFFFFF",
-                        "card-dark": "#27272A",
-                        "text-main-light": "#3F3F46",
-                        "text-main-dark": "#E4E4E7",
-                        "text-muted-light": "#71717A",
-                        "text-muted-dark": "#A1A1AA",
-                    },
-                    fontFamily: {
-                        display: ["Cinzel", "serif"],
-                        sans: ["Inter", "sans-serif"],
-                    },
-                },
-            },
-        };
-    </script>
-    <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            height: 8px;
-            width: 8px;
-        }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #CBD5E1;
-            border-radius: 4px;
-        }
-
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #4B5563;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.2s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Ensure DataTables fits roughly within the theme - Minimal overrides */
-        .dataTables_wrapper {
-            padding: 10px;
-        }
-
-        table.dataTable {
-            width: 100% !important;
-        }
-
-        /* FIX: Override legacy styles.css which sets .dropdown-content a { display: block } */
-        /* This restores the flex layout needed for the icons/dots to show */
-        #ecDropdown a {
-            display: flex !important;
-            align-items: center;
-        }
-
-        /* Modernize DataTables Search */
-        .dataTables_filter {
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 0 1rem;
-            /* align with container padding if any, or just spacing */
-        }
-
-        .dataTables_filter label {
-            font-size: 0.875rem;
-            color: #4B5563;
-            /* text-gray-600 */
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .dataTables_filter input {
-            border: 1px solid #E5E7EB;
-            /* border-gray-200 */
-            border-radius: 0.5rem;
-            /* rounded-lg */
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-            outline: none;
-            transition: all 0.2s;
-            margin-left: 0.5rem;
-        }
-
-        .dataTables_filter input:focus {
-            border-color: #10B981;
-            /* primary */
-            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
-        }
-
-        .dark .dataTables_filter label {
-            color: #D1D5DB;
-            /* text-gray-300 */
-        }
-
-        .dark .dataTables_filter input {
-            background-color: #27272A;
-            /* bg-card-dark */
-            border-color: #3f3f46;
-            /* border-gray-700 */
-            color: white;
-        }
-
-        /* Hide the old dropdown mechanic styles if they conflict, but scripts.js toggles .show on #ecDropdown */
-        /* We will map the new visual dropdown to the ID ecDropdown */
-    </style>
 </head>
 
 <body

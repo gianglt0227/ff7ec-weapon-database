@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #CBD5E1;
+    border-radius: 4px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #4B5563;
+}
+
+/* Fade In Animation */
+.fade-in {
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* DataTables Wrapper */
+.dataTables_wrapper {
+    padding: 10px;
+}
+
+table.dataTable {
+    width: 100% !important;
+}
+
+/* Fix dropdown display */
+#ecDropdown a {
+    display: flex !important;
+    align-items: center;
+}
+
+/* DataTables Search Styling */
+.dataTables_filter {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.dataTables_filter label {
+    font-size: 0.875rem;
+    color: #4B5563;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dataTables_filter input {
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    outline: none;
+    transition: all 0.2s;
+    margin-left: 0.5rem;
+}
+
+.dataTables_filter input:focus {
+    border-color: #10B981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+}
+
+.dark .dataTables_filter label {
+    color: #D1D5DB;
+}
+
+.dark .dataTables_filter input {
+    background-color: #374151;
+    border-color: #4B5563;
+    color: #F3F4F6;
+}
+
+.dark .dataTables_filter input:focus {
+    border-color: #10B981;
+}
