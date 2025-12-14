@@ -355,7 +355,8 @@ function countUniqueEffects() {
 
     for (let i = 0; i < weaponDatabase.length; i++) {
         const weapon = weaponDatabase[i];
-        const weaponName = findWeaponWithProperty(weapon, 'name', null);
+        const weaponNameObj = weapon.find(p => p.name === 'name');
+        const weaponName = weaponNameObj ? weaponNameObj.value : null;
 
         // Check for Status Apply, Status Cleanse, or Dispel
         if (findWeaponWithProperty(weapon, 'effect1', '[Status Apply]') ||
@@ -1254,3 +1255,13 @@ function CSVToArray(strData, strDelimiter) {
     // Return the parsed data.
     return (arrData);
 }
+
+// Load database on page load to populate filter count badges
+window.addEventListener('DOMContentLoaded', function() {
+    showLoadingSpinner('Loading weapon database...');
+    readDatabase(function() {
+        // Database loaded and calculateFilterCounts() already called
+        // Clear the loading spinner since we're not rendering tables yet
+        document.getElementById('Output').innerHTML = '';
+    });
+});
