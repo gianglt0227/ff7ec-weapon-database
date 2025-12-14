@@ -113,19 +113,10 @@ function tableCreate(user_row, user_col, list, header) {
 }
 
 /**
- * REMOVED: sortTable() function (72 lines)
- *
- * This function implemented a bubble sort algorithm for manually sorting table rows
- * by clicking column headers. It handled both numeric and text columns.
- *
- * Removal reason: DataTables.js library (loaded in index.html) provides superior
- * sorting functionality with better performance and UX. No calls to sortTable()
- * exist in the codebase.
- *
- * Removed on: 2024 refactoring
- * Commit: "refactor: remove unused sortTable() function (DataTables handles sorting)"
+ * Load weapon database from CSV file
+ * Uses extracted parsing functions from database-loader.js for better testability
+ * @param {Function} callback - Function to call after database loads
  */
-
 function readDatabase(callback) {
     // If already loaded, execute callback immediately
     if (weaponDatabase[0] != null) {
@@ -136,10 +127,10 @@ function readDatabase(callback) {
     // Show loading spinner
     showLoadingSpinner('Loading weapon database...');
 
-    const location = window.location.href;
-    const directoryPath = location.substring(0, location.lastIndexOf("/") + 1);
-    // Add cache busting to ensure we get the latest CSV
-    loadFile(directoryPath + FILE_NAME + "?t=" + new Date().getTime(), function(result, error) {
+    // Get CSV URL with cache busting
+    const csvUrl = getCSVUrl(FILE_NAME);
+
+    loadFile(csvUrl, function(result, error) {
         if (error) {
             showLoadingError(error);
             console.error('Database load error:', error);
@@ -147,65 +138,20 @@ function readDatabase(callback) {
         }
 
         if (result != null) {
-            // By lines
-            const lines = result.split('\n');
+            // Parse CSV using extracted function
+            const weapons = parseWeaponCSV(result, WEAP_NUM_SKIP_LINE);
 
-            for (let line = WEAP_NUM_SKIP_LINE; line < lines.length - 1; line++) {
-
-                const row = CSVToArray(lines[line], ',');
-                const i = 0;
-                let weapData = [];
-                weapData.push({ name: 'name', value: row[i][0] });
-                weapData.push({ name: 'charName', value: row[i][1] });
-                weapData.push({ name: 'sigil', value: row[i][2] });
-                weapData.push({ name: 'atb', value: row[i][3] });
-                weapData.push({ name: 'type', value: row[i][4] });    // dmg type
-                weapData.push({ name: 'element', value: row[i][5] });
-                weapData.push({ name: 'range', value: row[i][6] });
-                weapData.push({ name: 'effect1Target', value: row[i][7] });
-                weapData.push({ name: 'effect1', value: row[i][8] });
-                weapData.push({ name: 'effect1Pot', value: row[i][9] });
-                weapData.push({ name: 'effect1MaxPot', value: row[i][10] });
-                weapData.push({ name: 'effect2Target', value: row[i][11] });
-                weapData.push({ name: 'effect2', value: row[i][12] });
-                weapData.push({ name: 'effect2Pot', value: row[i][13] });
-                weapData.push({ name: 'effect2MaxPot', value: row[i][14] });
-                let m = 15;
-                weapData.push({ name: 'effect3Target', value: row[i][m] }); m++;
-                weapData.push({ name: 'effect3', value: row[i][m] }); m++;
-                weapData.push({ name: 'effect3Pot', value: row[i][m] }); m++;
-                weapData.push({ name: 'effect3MaxPot', value: row[i][m] }); m++;
-                weapData.push({ name: 'support1', value: row[i][m] }); m++;
-                weapData.push({ name: 'support2', value: row[i][m] }); m++;
-                weapData.push({ name: 'support3', value: row[i][m] }); m++;
-                weapData.push({ name: 'rAbility1', value: row[i][m] }); m++;
-                weapData.push({ name: 'rAbility2', value: row[i][m] }); m++;
-                weapData.push({ name: 'potOb10', value: row[i][m] }); m++;
-                weapData.push({ name: 'maxPotOb10', value: row[i][m] }); m++;
-                weapData.push({ name: 'effect1Dur', value: row[i][m] }); m++;
-                weapData.push({ name: 'effect2Dur', value: row[i][m] }); m++;
-                weapData.push({ name: 'effect3Dur', value: row[i][m] }); m++;
-                weapData.push({ name: 'condition1', value: row[i][m] }); m++;
-                weapData.push({ name: 'condition2', value: row[i][m] }); m++;
-                weapData.push({ name: 'condition3', value: row[i][m] }); m += 15;
-                weapData.push({ name: 'effect1Range', value: row[i][m] }); m++;
-
-                if (row[i][m] == 0 || row[i][m] == '0') {
-                    weapData.push({ name: 'uses', value: ZERO_ATB_DISPLAY });
-                }
-                else {
-                    weapData.push({ name: 'uses', value: row[i][m] });
-                }
-                m++;
-                m++; // id
-
-                weapData.push({ name: 'gachaType', value: row[i][m] }); m++;
-                weapData.push({ name: 'effect2Range', value: row[i][m] }); m++;
-
-
-                weaponDatabase.push(weapData);
-                // console.log(weapData);
+            // Validate parse results
+            if (weapons.length === 0) {
+                const errorMsg = 'Failed to parse weapon data from CSV';
+                showLoadingError(errorMsg);
+                console.error(errorMsg);
+                return;
             }
+
+            // Populate global database
+            weaponDatabase.push(...weapons);
+            console.log(`Database loaded: ${weaponDatabase.length} weapons`);
         }
 
         // Hide loading spinner and execute callback
