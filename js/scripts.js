@@ -112,78 +112,20 @@ function tableCreate(user_row, user_col, list, header) {
     console.log("Created table: " + tblClassName);
 }
 
-function sortTable(cell) {
-    // Grab the table node
-    const table = cell.parentNode.parentNode;
-    let col = 0;
-    let asc = true;
-    let swap = true;
-    let shouldSwap = false;
-    let count = 0;
-    let isNumber = false;
+/**
+ * REMOVED: sortTable() function (72 lines)
+ *
+ * This function implemented a bubble sort algorithm for manually sorting table rows
+ * by clicking column headers. It handled both numeric and text columns.
+ *
+ * Removal reason: DataTables.js library (loaded in index.html) provides superior
+ * sorting functionality with better performance and UX. No calls to sortTable()
+ * exist in the codebase.
+ *
+ * Removed on: 2024 refactoring
+ * Commit: "refactor: remove unused sortTable() function (DataTables handles sorting)"
+ */
 
-    for (let i = 0; i < table.rows[0].cells.length; i++) {
-        if (table.rows[0].cells[i].innerHTML == cell.innerHTML) {
-            col = i;
-            if (cell.innerHTML == "Pot%" || cell.innerHTML == "Max%" || cell.innerHTML == "Duration (s)"
-                || cell.innerHTML == "% per ATB") {
-                isNumber = true;
-            }
-        }
-    }
-
-    while (swap) {
-        swap = false;
-        const rows = table.rows;
-
-        // Skip header row
-        for (let i = 1; i < (rows.length - 1); i++) {
-            shouldSwap = false;
-            // get current row and the next row
-            const x = rows[i].getElementsByTagName("td")[col];
-            const y = rows[i + 1].getElementsByTagName("td")[col];
-            let xValue = x, yValue = y;
-
-            if (isNumber) {
-                xValue = parseFloat(x.innerHTML);
-                yValue = parseFloat(y.innerHTML);
-            }
-            else {
-                xValue = x.innerHTML;
-                yValue = y.innerHTML;
-            }
-
-            if (asc) {
-                // Check if switch based on ascendence 
-
-                if (xValue > yValue) {
-                    shouldSwap = true;
-                    break;
-                }
-            }
-            else {
-                // Check if switch based on descendence 
-                if (xValue < yValue) {
-                    shouldSwap = true;
-                    break;
-                }
-            }
-        }
-        if (shouldSwap) {
-            // Swap
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            swap = true;
-            count++;
-        }
-        else {
-            if (count == 0 && asc) {
-                asc = false;
-                swap = true;
-            }
-        }
-    }
-
-}
 function readDatabase(callback) {
     // If already loaded, execute callback immediately
     if (weaponDatabase[0] != null) {
