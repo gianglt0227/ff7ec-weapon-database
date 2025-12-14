@@ -15,14 +15,14 @@ let filterCounts = {}; // Store pre-calculated counts
 
 function ecSearch() {
     document.getElementById("ecDropdown").classList.toggle("show");
-    var divToPrint = document.getElementById('Output');
+    const divToPrint = document.getElementById('Output');
     divToPrint.innerHTML = ''
 }
 
 /* Create a table to display the result */
 function tableCreate(user_row, user_col, list, header) {
-    //body reference 
-    var body = document.getElementById('Output');
+    //body reference
+    const body = document.getElementById('Output');
 
     // header
     const h1 = document.createElement("h1");
@@ -34,7 +34,7 @@ function tableCreate(user_row, user_col, list, header) {
     console.log("Table Data:", list);
 
     // create <table> and a <tbody>
-    var tbl = document.createElement("table");
+    const tbl = document.createElement("table");
     let tblClassName;
 
     // Different format for each table 
@@ -57,16 +57,16 @@ function tableCreate(user_row, user_col, list, header) {
 
     let tblId = tblClassName + Math.random().toString(36).substr(2, 9); // Generate a unique ID for each table
     tbl.id = tblId;
-    var tblBody = document.createElement("tbody");
+    const tblBody = document.createElement("tbody");
     console.log("Creating table: " + tblClassName);
 
-    var headerRow = document.createElement("tr");
+    const headerRow = document.createElement("tr");
     // create <tr> and <td>
-    for (var j = 0; j < user_row; j++) {
-        var row = document.createElement("tr");
+    for (let j = 0; j < user_row; j++) {
+        const row = document.createElement("tr");
 
-        for (var i = 0; i < user_col; i++) {
-            var cell;
+        for (let i = 0; i < user_col; i++) {
+            let cell;
             if (j == 0) {
                 cell = document.createElement("th");
                 headerRow.appendChild(cell);
@@ -75,8 +75,7 @@ function tableCreate(user_row, user_col, list, header) {
                 cell = document.createElement("td");
                 row.appendChild(cell);
             }
-            var cellText;
-            cellText = document.createTextNode(list[j][i] || "");
+            const cellText = document.createTextNode(list[j][i] || "");
             cell.appendChild(cellText);
 
         }
@@ -86,7 +85,7 @@ function tableCreate(user_row, user_col, list, header) {
     }
 
     // append the <tbody> inside the <table>
-    var tblHead = document.createElement("thead");
+    const tblHead = document.createElement("thead");
     tblHead.appendChild(headerRow);
     tbl.appendChild(tblHead);
     tbl.appendChild(tblBody);
@@ -103,15 +102,15 @@ function tableCreate(user_row, user_col, list, header) {
 
 function sortTable(cell) {
     // Grab the table node
-    var table = cell.parentNode.parentNode;
-    var col = 0;
-    var asc = true;
-    var swap = true;
-    var shouldSwap = false;
-    var count = 0;
-    var isNumber = false;
+    const table = cell.parentNode.parentNode;
+    let col = 0;
+    let asc = true;
+    let swap = true;
+    let shouldSwap = false;
+    let count = 0;
+    let isNumber = false;
 
-    for (var i = 0; i < table.rows[0].cells.length; i++) {
+    for (let i = 0; i < table.rows[0].cells.length; i++) {
         if (table.rows[0].cells[i].innerHTML == cell.innerHTML) {
             col = i;
             if (cell.innerHTML == "Pot%" || cell.innerHTML == "Max%" || cell.innerHTML == "Duration (s)"
@@ -123,15 +122,15 @@ function sortTable(cell) {
 
     while (swap) {
         swap = false;
-        var rows = table.rows;
+        const rows = table.rows;
 
         // Skip header row
-        for (var i = 1; i < (rows.length - 1); i++) {
+        for (let i = 1; i < (rows.length - 1); i++) {
             shouldSwap = false;
             // get current row and the next row
-            var x = rows[i].getElementsByTagName("td")[col];
-            var y = rows[i + 1].getElementsByTagName("td")[col];
-            var xValue = x, yValue = y;
+            const x = rows[i].getElementsByTagName("td")[col];
+            const y = rows[i + 1].getElementsByTagName("td")[col];
+            let xValue = x, yValue = y;
 
             if (isNumber) {
                 xValue = parseFloat(x.innerHTML);
@@ -183,8 +182,8 @@ function readDatabase(callback) {
     // Show loading spinner
     showLoadingSpinner('Loading weapon database...');
 
-    var location = window.location.href;
-    var directoryPath = location.substring(0, location.lastIndexOf("/") + 1);
+    const location = window.location.href;
+    const directoryPath = location.substring(0, location.lastIndexOf("/") + 1);
     // Add cache busting to ensure we get the latest CSV
     loadFile(directoryPath + FILE_NAME + "?t=" + new Date().getTime(), function(result, error) {
         if (error) {
@@ -195,12 +194,12 @@ function readDatabase(callback) {
 
         if (result != null) {
             // By lines
-            var lines = result.split('\n');
+            const lines = result.split('\n');
 
-            for (var line = WEAP_NUM_SKIP_LINE; line < lines.length - 1; line++) {
+            for (let line = WEAP_NUM_SKIP_LINE; line < lines.length - 1; line++) {
 
-                var row = CSVToArray(lines[line], ',');
-                var i = 0;
+                const row = CSVToArray(lines[line], ',');
+                const i = 0;
                 let weapData = [];
                 weapData.push({ name: 'name', value: row[i][0] });
                 weapData.push({ name: 'charName', value: row[i][1] });
@@ -217,7 +216,7 @@ function readDatabase(callback) {
                 weapData.push({ name: 'effect2', value: row[i][12] });
                 weapData.push({ name: 'effect2Pot', value: row[i][13] });
                 weapData.push({ name: 'effect2MaxPot', value: row[i][14] });
-                var m = 15;
+                let m = 15;
                 weapData.push({ name: 'effect3Target', value: row[i][m] }); m++;
                 weapData.push({ name: 'effect3', value: row[i][m] }); m++;
                 weapData.push({ name: 'effect3Pot', value: row[i][m] }); m++;
@@ -436,17 +435,17 @@ function updateFilterBadges() {
 
 // Find elements in an array
 function findElement(arr, propName, propValue) {
-    for (var i = 0; i < arr.length; i++)
+    for (let i = 0; i < arr.length; i++)
         if (arr[i][propName] == propValue)
             return arr[i];
 }
 function getValueFromDatabaseItem(item, name) {
-    var i = findElement(item, "name", name);
+    const i = findElement(item, "name", name);
 
     return i["value"];
 }
 function findWeaponWithProperty(arr, propName, propValue) {
-    for (var i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         if (arr[i].name == propName) {
             if (arr[i].value.indexOf(propValue) >= 0) {
                 return true;
@@ -458,8 +457,8 @@ function findWeaponWithProperty(arr, propName, propValue) {
 }
 
 function elementalCompare(a, b) {
-    var aItem = parseFloat(a[MAX_POT_INDEX]);
-    var bItem = parseFloat(b[MAX_POT_INDEX]);
+    const aItem = parseFloat(a[MAX_POT_INDEX]);
+    const bItem = parseFloat(b[MAX_POT_INDEX]);
     if (aItem < bItem) {
         return 1;
     }
@@ -642,7 +641,7 @@ function filterUniqueEffect() {
 
 function filterAll() {
     // Display everything...
-    var header = "List of All Weapons:";
+    const header = "List of All Weapons:";
     printAllWeapon("", header);
 
 
@@ -656,7 +655,7 @@ function printElemWeapon(elem) {
         // Clear output div to remove loading spinner
         document.getElementById('Output').innerHTML = '';
 
-        var elemResist, elemEnchant, elemMateria;
+        let elemResist, elemEnchant, elemMateria;
 
         if (elem == "Lightning") {
             elemResist = "[Resist] Thunder"; // For whatever reseaon, Lightning resist is listed as "[Resist] Thunder";
@@ -669,7 +668,7 @@ function printElemWeapon(elem) {
             elemMateria = elem;
         }
 
-        var header = "Weapon with C-Abilities - " + elem;
+        let header = "Weapon with C-Abilities - " + elem;
         printWeaponElem(elem, header);
 
         if (elem != "None") {
@@ -696,8 +695,8 @@ function printLimitedWeapon(elem, header) {
         let elemental;
     elemental = [["Weapon Name", "Char", "AOE", "Type", "ATB", "Element", "Pot%", "Max%", "% per ATB", "Condition"]];
 
-    for (var i = 0; i < weaponDatabase.length; i++) {
-        var found = findWeaponWithProperty(weaponDatabase[i], 'gachaType', "L");
+    for (let i = 0; i < weaponDatabase.length; i++) {
+        const found = findWeaponWithProperty(weaponDatabase[i], 'gachaType', "L");
         if (found) {
             // Make a new row and push them into the list
             let row = [];
@@ -707,12 +706,12 @@ function printLimitedWeapon(elem, header) {
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "range"));
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "type"));
 
-            var atb = getValueFromDatabaseItem(weaponDatabase[i], "atb");
+            const atb = getValueFromDatabaseItem(weaponDatabase[i], "atb");
             row.push(atb);
 
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "element"));
 
-            var pot, maxPot;
+            let pot, maxPot;
 
             pot = parseInt(getValueFromDatabaseItem(weaponDatabase[i], "potOb10"));
             row.push(pot);
@@ -768,8 +767,8 @@ function printAllWeapon(elem, header) {
         let elemental;
     elemental = [["Weapon Name", "Char", "AOE", "Type", "ATB", "Element", "Pot%", "Max%", "% per ATB", "Type", "Condition"]];
 
-    for (var i = 0; i < weaponDatabase.length; i++) {
-        //        var found = findWeaponWithProperty(weaponDatabase[i], 'gachaType', "L");
+    for (let i = 0; i < weaponDatabase.length; i++) {
+        //        const found = findWeaponWithProperty(weaponDatabase[i], 'gachaType', "L");
         //        if (found) {
         // Make a new row and push them into the list
         let row = [];
@@ -779,12 +778,12 @@ function printAllWeapon(elem, header) {
         row.push(getValueFromDatabaseItem(weaponDatabase[i], "range"));
         row.push(getValueFromDatabaseItem(weaponDatabase[i], "type"));
 
-        var atb = getValueFromDatabaseItem(weaponDatabase[i], "atb");
+        const atb = getValueFromDatabaseItem(weaponDatabase[i], "atb");
         row.push(atb);
 
         row.push(getValueFromDatabaseItem(weaponDatabase[i], "element"));
 
-        var pot, maxPot;
+        let pot, maxPot;
 
         pot = parseInt(getValueFromDatabaseItem(weaponDatabase[i], "potOb10"));
         row.push(pot);
@@ -851,8 +850,8 @@ function printWeaponElem(elem, header) {
         elemental = [["Weapon Name", "Char", "AOE", "Type", "ATB", "Uses", "Target", "Pot%", "Max%", "% per ATB"]];
     }
 
-    for (var i = 0; i < weaponDatabase.length; i++) {
-        var found = findWeaponWithProperty(weaponDatabase[i], 'element', elem);
+    for (let i = 0; i < weaponDatabase.length; i++) {
+        const found = findWeaponWithProperty(weaponDatabase[i], 'element', elem);
         if (found) {
             if (elem == "Heal") {
                 // Low % heal is not worth it - set threshold at 50
@@ -868,7 +867,7 @@ function printWeaponElem(elem, header) {
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "range"));
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "type"));
 
-            var atb = getValueFromDatabaseItem(weaponDatabase[i], "atb");
+            const atb = getValueFromDatabaseItem(weaponDatabase[i], "atb");
             row.push(atb);
 
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "uses"));
@@ -877,7 +876,7 @@ function printWeaponElem(elem, header) {
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect1Target"));
             }
 
-            var pot, maxPot;
+            let pot, maxPot;
 
             pot = parseInt(getValueFromDatabaseItem(weaponDatabase[i], "potOb10"));
             row.push(pot);
@@ -926,7 +925,7 @@ function printWeaponSigil(sigil, header) {
     // No readDatabase call here - called from parent functions that already loaded DB
     let materia = [["Weapon Name", "Char", "AOE", "Type", "Elem", "ATB", "Uses", "Pot%", "Max%"]];
 
-    for (var i = 0; i < weaponDatabase.length; i++) {
+    for (let i = 0; i < weaponDatabase.length; i++) {
         if (findWeaponWithProperty(weaponDatabase[i], 'sigil', sigil)) {
             let row = [];
 
@@ -950,7 +949,7 @@ function printWeaponMateria(elemMateria, header) {
     // No readDatabase call here - called from parent functions that already loaded DB
     let materia = [["Weapon Name", "Char", "AOE", "Type", "Elem", "ATB", "Uses", "Pot%", "Max%"]];
 
-    for (var i = 0; i < weaponDatabase.length; i++) {
+    for (let i = 0; i < weaponDatabase.length; i++) {
         if (findWeaponWithProperty(weaponDatabase[i], 'support1', elemMateria) ||
             findWeaponWithProperty(weaponDatabase[i], 'support2', elemMateria) ||
             findWeaponWithProperty(weaponDatabase[i], 'support3', elemMateria)) {
@@ -976,9 +975,9 @@ function printWeaponMateria(elemMateria, header) {
 function printRegenWeapon(header) {
     // No readDatabase call here - called from parent functions that already loaded DB
     let effect = [["Name", "Char", "Type", "ATB", "Uses", "AOE", "Target", "Duration (s)", "Pot%", "Max%", "% per ATB"]];
-    var text = "Regen";
+    const text = "Regen";
 
-    for (var i = 0; i < weaponDatabase.length; i++) {
+    for (let i = 0; i < weaponDatabase.length; i++) {
         if (findWeaponWithProperty(weaponDatabase[i], 'element', "Heal")) {
             if ((found = findWeaponWithProperty(weaponDatabase[i], 'effect1', text)) || findWeaponWithProperty(weaponDatabase[i], 'effect2', text)) {
                 // Make a new row and push them into the list
@@ -988,12 +987,12 @@ function printRegenWeapon(header) {
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "charName"));
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "type"));
 
-                var atb = getValueFromDatabaseItem(weaponDatabase[i], "atb");
+                const atb = getValueFromDatabaseItem(weaponDatabase[i], "atb");
                 row.push(atb);
 
                 row.push(getValueFromDatabaseItem(weaponDatabase[i], "uses"));
 
-                var dur, pot, maxPot;
+                let dur, pot, maxPot;
 
                 if (found) {
                     row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect1Range"));
@@ -1042,7 +1041,7 @@ function printRegenWeapon(header) {
 function printWeaponEffect(text, header) {
     // No readDatabase call here - called from parent functions that already loaded DB
     let effect = [["Name", "Char", "Type", "Elem", "ATB", "Uses", "AOE", "Target", "Pot", "Max Pot", "Duration (s)", "Condition"]];
-    for (var i = 0; i < weaponDatabase.length; i++) {
+    for (let i = 0; i < weaponDatabase.length; i++) {
         if ((found = findWeaponWithProperty(weaponDatabase[i], 'effect1', text)) || (found2 = findWeaponWithProperty(weaponDatabase[i], 'effect2', text))
             || findWeaponWithProperty(weaponDatabase[i], 'effect3', text)) {
             // Make a new row and push them into the list
@@ -1098,7 +1097,7 @@ function printWeaponUniqueEffect(text, header) {
     // No readDatabase call here - called from parent functions that already loaded DB
     let effect = [["Name", "Char", "AOE", "Type", "Elem", "ATB", "Uses", "Target1", "Effect1", "Condition1", "Target2", "Effect2", "Condition2"]];
 
-    for (var i = 0; i < weaponDatabase.length; i++) {
+    for (let i = 0; i < weaponDatabase.length; i++) {
         if ((found = findWeaponWithProperty(weaponDatabase[i], 'effect1', text)) ||
             findWeaponWithProperty(weaponDatabase[i], 'effect2', text)) {
             let row = [];
@@ -1118,28 +1117,28 @@ function printWeaponUniqueEffect(text, header) {
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "uses"));
 
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect1Target"));
-            var str = getValueFromDatabaseItem(weaponDatabase[i], "effect1");
-            var indexOfFirst = str.indexOf(text);
-            if (indexOfFirst >= 0) {
-                var newstr = str.substring(indexOfFirst + text.length + 1);
-                row.push(newstr);
+            const str1 = getValueFromDatabaseItem(weaponDatabase[i], "effect1");
+            const indexOfFirst1 = str1.indexOf(text);
+            if (indexOfFirst1 >= 0) {
+                const newstr1 = str1.substring(indexOfFirst1 + text.length + 1);
+                row.push(newstr1);
             }
             else {
-                row.push(str);
+                row.push(str1);
             }
 
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "condition1"));
 
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "effect2Target"));
 
-            var str = getValueFromDatabaseItem(weaponDatabase[i], "effect2");
-            var indexOfFirst = str.indexOf(text);
-            if (indexOfFirst >= 0) {
-                var newstr = str.substring(indexOfFirst + text.length + 1);
-                row.push(newstr);
+            const str2 = getValueFromDatabaseItem(weaponDatabase[i], "effect2");
+            const indexOfFirst2 = str2.indexOf(text);
+            if (indexOfFirst2 >= 0) {
+                const newstr2 = str2.substring(indexOfFirst2 + text.length + 1);
+                row.push(newstr2);
             }
             else {
-                row.push(str);
+                row.push(str2);
             }
 
             row.push(getValueFromDatabaseItem(weaponDatabase[i], "condition2"));
@@ -1154,7 +1153,7 @@ function printWeaponUniqueEffect(text, header) {
 
 // Load file from local server (async version)
 function loadFile(filePath, callback) {
-    var xmlhttp = new XMLHttpRequest();
+    const xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", filePath, true); // Changed to async (true)
     xmlhttp.onload = function() {
         if (xmlhttp.status == 200) {
@@ -1180,7 +1179,7 @@ function CSVToArray(strData, strDelimiter) {
     strDelimiter = (strDelimiter || ",");
     //    console.log(strData);
     // Create a regular expression to parse the CSV values.
-    var objPattern = new RegExp(
+    const objPattern = new RegExp(
         (
             // Delimiters.
             "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
@@ -1197,11 +1196,11 @@ function CSVToArray(strData, strDelimiter) {
 
     // Create an array to hold our data. Give the array
     // a default empty first row.
-    var arrData = [[]];
+    const arrData = [[]];
 
     // Create an array to hold our individual pattern
     // matching groups.
-    var arrMatches = null;
+    let arrMatches = null;
 
 
     // Keep looping over the regular expression matches
@@ -1209,7 +1208,7 @@ function CSVToArray(strData, strDelimiter) {
     while (arrMatches = objPattern.exec(strData)) {
 
         // Get the delimiter that was found.
-        var strMatchedDelimiter = arrMatches[1];
+        const strMatchedDelimiter = arrMatches[1];
 
         // Check to see if the given delimiter has a length
         // (is not the start of string) and if it matches
@@ -1226,7 +1225,7 @@ function CSVToArray(strData, strDelimiter) {
 
         }
 
-        var strMatchedValue;
+        let strMatchedValue;
 
         // Now that we have our delimiter out of the way,
         // let's check to see which kind of value we
