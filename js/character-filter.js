@@ -79,22 +79,32 @@ function rebuildCharacterButtons() {
 }
 
 function updateCharacterCounts() {
-    // Count weapons per character from ALL tables currently in DOM
-    const characterCounts = {};
+    // Track unique weapons per character using Sets
+    const characterWeapons = {};
     allCharacters.forEach(char => {
-        characterCounts[char] = 0;
+        characterWeapons[char] = new Set();
     });
 
-    // Count from all visible tables in the Output div
+    // Collect unique weapon names per character from all visible tables
     const allTables = document.querySelectorAll('#Output table tbody tr');
     allTables.forEach(row => {
+        const weaponNameCell = row.cells[0]; // Weapon name is in column index 0
         const charCell = row.cells[1]; // Character is in column index 1
-        if (charCell) {
+
+        if (weaponNameCell && charCell) {
+            const weaponName = weaponNameCell.textContent.trim();
             const charName = charCell.textContent.trim();
-            if (charName && characterCounts.hasOwnProperty(charName)) {
-                characterCounts[charName]++;
+
+            if (weaponName && charName && characterWeapons.hasOwnProperty(charName)) {
+                characterWeapons[charName].add(weaponName);
             }
         }
+    });
+
+    // Convert Sets to counts
+    const characterCounts = {};
+    allCharacters.forEach(char => {
+        characterCounts[char] = characterWeapons[char].size;
     });
 
     // Update the count in each button
