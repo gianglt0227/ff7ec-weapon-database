@@ -4,7 +4,7 @@
  */
 
 // Mock global DataTable function (from DataTables.js library)
-global.DataTable = jest.fn(function(selector, options) {
+global.DataTable = jest.fn(function (selector, options) {
   // Mock DataTable instance
   return {
     selector: selector,
@@ -55,6 +55,9 @@ global.testUtils = {
     document.body.innerHTML = `
       <div id="ecDropdown" class="dropdown-content"></div>
       <div id="Output" class="output"></div>
+      <div id="characterFilterContainer" class="hidden">
+        <div id="characterFilterButtons"></div>
+      </div>
     `;
   }
 };

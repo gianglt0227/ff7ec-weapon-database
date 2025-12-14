@@ -23,7 +23,7 @@ document.body.innerHTML = `
 `;
 
 // Load and evaluate scripts.js - do this at module level
-const scriptPath = path.join(__dirname, '../../scripts.js');
+const scriptPath = path.join(__dirname, '../../js/scripts.js');
 const scriptContent = fs.readFileSync(scriptPath, 'utf8');
 eval(scriptContent);
 

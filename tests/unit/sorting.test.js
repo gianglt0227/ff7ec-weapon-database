@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const scriptPath = path.join(__dirname, '../../scripts.js');
+const scriptPath = path.join(__dirname, '../../js/scripts.js');
 const scriptContent = fs.readFileSync(scriptPath, 'utf8');
 
 // Setup DOM before evaluating scripts.js
