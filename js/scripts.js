@@ -466,104 +466,90 @@ function elementalCompare(a, b) {
     }
     return 0;
 }
+
+/**
+ * Generic filter wrapper - handles common pattern for all filters
+ * @param {Function} printFunction - The print function to call
+ * @param {...any} args - Arguments to pass to print function
+ */
+function executeFilter(printFunction, ...args) {
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        printFunction(...args);
+    });
+}
+
+/**
+ * Filter weapons by element
+ * @param {string} element - Element name (Fire, Ice, Lightning, etc.)
+ */
+function filterByElement(element) {
+    printElemWeapon(element);
+}
+
+// Element filters - consolidated
 function filterFire() {
-    printElemWeapon("Fire");
+    filterByElement("Fire");
 }
 function filterIce() {
-    printElemWeapon("Ice");
+    filterByElement("Ice");
 }
-
 function filterLightning() {
-    printElemWeapon("Lightning");
+    filterByElement("Lightning");
 }
-
 function filterWater() {
-    printElemWeapon("Water");
+    filterByElement("Water");
 }
-
 function filterWind() {
-    printElemWeapon("Wind");
+    filterByElement("Wind");
 }
-
 function filterEarth() {
-    printElemWeapon("Earth");
+    filterByElement("Earth");
 }
-
 function filterNonElem() {
-    printElemWeapon("None");
+    filterByElement("None");
 }
 
 function filterLimited() {
     printLimitedWeapon("", "Limited/Crossover Weapons:");
 }
 
-/* I should clean this up and make only 1 function calling into all of these filters... */
-/* Dropdown toggle removed from all filter functions - dropdown now stays open for multiple selections */
+/**
+ * Filter weapons by stat effect (debuff or buff)
+ * @param {string} effectName - Effect name like '[Debuff] MATK'
+ * @param {string} header - Display header for the table
+ */
+function filterStatEffect(effectName, header) {
+    executeFilter(printWeaponEffect, effectName, header);
+}
+
+// Stat debuff filters - consolidated
 function filterMatkDown() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with [Debuff] MATK:";
-        printWeaponEffect("[Debuff] MATK", header);
-    });
+    filterStatEffect("[Debuff] MATK", "Weapon with [Debuff] MATK:");
 }
 function filterPatkDown() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with [Debuff] PATK:";
-        printWeaponEffect("[Debuff] PATK", header);
-    });
+    filterStatEffect("[Debuff] PATK", "Weapon with [Debuff] PATK:");
 }
 function filterPdefDown() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with [Debuff] PDEF:";
-        printWeaponEffect("[Debuff] PDEF", header);
-    });
+    filterStatEffect("[Debuff] PDEF", "Weapon with [Debuff] PDEF:");
 }
 function filterMdefDown() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with [Debuff] MDEF:";
-        printWeaponEffect("[Debuff] MDEF", header);
-    });
+    filterStatEffect("[Debuff] MDEF", "Weapon with [Debuff] MDEF:");
 }
 
+// Stat buff filters - consolidated
 function filterPatkUp() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with [Buff] PATK:";
-        printWeaponEffect("[Buff] PATK", header);
-    });
+    filterStatEffect("[Buff] PATK", "Weapon with [Buff] PATK:");
 }
 function filterMatkUp() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with [Buff] MATK:";
-        printWeaponEffect("[Buff] MATK", header);
-    });
+    filterStatEffect("[Buff] MATK", "Weapon with [Buff] MATK:");
 }
-
 function filterPdefUp() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with [Buff] PDEF:";
-        printWeaponEffect("[Buff] PDEF", header);
-    });
+    filterStatEffect("[Buff] PDEF", "Weapon with [Buff] PDEF:");
 }
 function filterMdefUp() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with [Buff] MDEF:";
-        printWeaponEffect("[Buff] MDEF", header);
-    });
+    filterStatEffect("[Buff] MDEF", "Weapon with [Buff] MDEF:");
 }
 
 function filterHeal() {
@@ -594,41 +580,31 @@ function filterProvoke() {
     });
 }
 
+// Simple single-effect filter - consolidated
 function filterExploitWeakness() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Exploit Weakness Weapon:";
-        printWeaponEffect("[Buff] Weakness", header);
-    });
+    filterStatEffect("[Buff] Weakness", "Exploit Weakness Weapon:");
 }
 
+/**
+ * Filter weapons by materia slot sigil
+ * @param {string} materiaType - Materia type (Circle, Triangle, X Sigil)
+ * @param {string} header - Display header for the table
+ */
+function filterMateriaSlot(materiaType, header) {
+    executeFilter(printWeaponMateria, materiaType, header);
+}
+
+// Materia slot filters - consolidated
 function filterCircleSigilMateria() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with ◯ Sigil Materia Slot:";
-        printWeaponMateria("Circle", header);
-    });
+    filterMateriaSlot("Circle", "Weapon with ◯ Sigil Materia Slot:");
 }
-
 
 function filterTriangleSigilMateria() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with △ Sigil Materia Slot:";
-        printWeaponMateria("Triangle", header);
-    });
+    filterMateriaSlot("Triangle", "Weapon with △ Sigil Materia Slot:");
 }
 
 function filterXSigilMateria() {
-    closeDropdown();
-    readDatabase(function() {
-        document.getElementById('Output').innerHTML = '';
-        const header = "Weapon with ✕ Sigil Materia Slot:";
-        printWeaponMateria("X Sigil", header);
-    });
+    filterMateriaSlot("X Sigil", "Weapon with ✕ Sigil Materia Slot:");
 }
 
 function filterDiamondMateria() {
