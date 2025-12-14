@@ -96,6 +96,7 @@ function tableCreate(user_row, user_col, list, header) {
 
     // 5. Initialize DataTable
     new DataTable('#' + tbl.id, {
+        scrollX: true,
         paging: false,
         searching: true,
         info: false,

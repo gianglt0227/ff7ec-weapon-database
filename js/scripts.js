@@ -95,7 +95,8 @@ function tableCreate(user_row, user_col, list, header) {
     body.appendChild(tbl);
 
     new DataTable('#' + tblId, {
-        paging: false
+        paging: false,
+        scrollX: true
     });
     console.log("Created table: " + tblClassName);
 }
