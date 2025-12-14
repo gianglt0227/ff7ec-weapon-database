@@ -326,99 +326,166 @@ function filterLimited() {
 /* I should clean this up and make only 1 function calling into all of these filters... */
 /* Dropdown toggle removed from all filter functions - dropdown now stays open for multiple selections */
 function filterMatkDown() {
-    var header = "Weapon with [Debuff] MATK:";
-    printWeaponEffect("[Debuff] MATK", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with [Debuff] MATK:";
+        printWeaponEffect("[Debuff] MATK", header);
+    });
 }
 function filterPatkDown() {
-    var header = "Weapon with [Debuff] PATK:";
-    printWeaponEffect("[Debuff] PATK", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with [Debuff] PATK:";
+        printWeaponEffect("[Debuff] PATK", header);
+    });
 }
 function filterPdefDown() {
-    var header = "Weapon with [Debuff] PDEF:";
-    printWeaponEffect("[Debuff] PDEF", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with [Debuff] PDEF:";
+        printWeaponEffect("[Debuff] PDEF", header);
+    });
 }
 function filterMdefDown() {
-    var header = "Weapon with [Debuff] MDEF:";
-    printWeaponEffect("[Debuff] MDEF", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with [Debuff] MDEF:";
+        printWeaponEffect("[Debuff] MDEF", header);
+    });
 }
 
 function filterPatkUp() {
-    var header = "Weapon with [Buff] PATK:";
-    printWeaponEffect("[Buff] PATK", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with [Buff] PATK:";
+        printWeaponEffect("[Buff] PATK", header);
+    });
 }
 function filterMatkUp() {
-    var header = "Weapon with [Buff] MATK:";
-    printWeaponEffect("[Buff] MATK", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with [Buff] MATK:";
+        printWeaponEffect("[Buff] MATK", header);
+    });
 }
 
 function filterPdefUp() {
-    var header = "Weapon with [Buff] PDEF:";
-    printWeaponEffect("[Buff] PDEF", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with [Buff] PDEF:";
+        printWeaponEffect("[Buff] PDEF", header);
+    });
 }
 function filterMdefUp() {
-    var header = "Weapon with [Buff] MDEF:";
-    printWeaponEffect("[Buff] MDEF", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with [Buff] MDEF:";
+        printWeaponEffect("[Buff] MDEF", header);
+    });
 }
 
 function filterHeal() {
-    var header = "Non-Regen Healing Weapon (> 25% Potency):";
-    printWeaponElem("Heal", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
 
-    var header = "Regen Healing Weapon:";
-    printRegenWeapon(header);
+        let header = "Non-Regen Healing Weapon (> 25% Potency):";
+        printWeaponElem("Heal", header);
 
-    var header = "Weapon with All (Cure) Materia Slot:";
-    printWeaponMateria("All (Cure)", header);
+        header = "Regen Healing Weapon:";
+        printRegenWeapon(header);
+
+        header = "Weapon with All (Cure) Materia Slot:";
+        printWeaponMateria("All (Cure)", header);
+    });
 }
 function filterProvoke() {
-    var header = "Provoke Weapon:";
-    printWeaponEffect("[Buff] Provoke", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
 
-    var header = "Veil Weapon:";
-    printWeaponEffect("[Buff] Veil", header);
+        let header = "Provoke Weapon:";
+        printWeaponEffect("[Buff] Provoke", header);
+
+        header = "Veil Weapon:";
+        printWeaponEffect("[Buff] Veil", header);
+    });
 }
 
 function filterExploitWeakness() {
-    var header = "Exploit Weakness Weapon:";
-    printWeaponEffect("[Buff] Weakness", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Exploit Weakness Weapon:";
+        printWeaponEffect("[Buff] Weakness", header);
+    });
 }
 
 function filterCircleSigilMateria() {
-    var header = "Weapon with ◯ Sigil Materia Slot:";
-    printWeaponMateria("Circle", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with ◯ Sigil Materia Slot:";
+        printWeaponMateria("Circle", header);
+    });
 }
 
 
 function filterTriangleSigilMateria() {
-    var header = "Weapon with △ Sigil Materia Slot:";
-    printWeaponMateria("Triangle", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with △ Sigil Materia Slot:";
+        printWeaponMateria("Triangle", header);
+    });
 }
 
 function filterXSigilMateria() {
-    var header = "Weapon with ✕ Sigil Materia Slot:";
-    printWeaponMateria("X Sigil", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with ✕ Sigil Materia Slot:";
+        printWeaponMateria("X Sigil", header);
+    });
 }
 
 function filterDiamondMateria() {
-    var header = "Weapon with ◊ Sigil:";
-    printWeaponSigil("Diamond", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
+        const header = "Weapon with ◊ Sigil:";
+        printWeaponSigil("Diamond", header);
+    });
 }
 
 function filterUniqueEffect() {
-    var header = "Weapon Applying Status:";
-    printWeaponUniqueEffect("[Status Apply]", header);
+    closeDropdown();
+    readDatabase(function() {
+        document.getElementById('Output').innerHTML = '';
 
-    var header = "Weapon Removing Status:";
-    printWeaponUniqueEffect("[Status Cleanse]", header);
+        let header = "Weapon Applying Status:";
+        printWeaponUniqueEffect("[Status Apply]", header);
 
-    header = "Weapon with Dispel Effect:";
-    printWeaponUniqueEffect("[Dispel", header);
+        header = "Weapon Removing Status:";
+        printWeaponUniqueEffect("[Status Cleanse]", header);
 
-    header = "Weapon with Haste Effect:";
-    printWeaponEffect("Haste", header);
+        header = "Weapon with Dispel Effect:";
+        printWeaponUniqueEffect("[Dispel", header);
 
-    header = "Weapon with Increase Command Gauge Effect:";
-    printWeaponEffect("Increases Command Gauge", header);
+        header = "Weapon with Haste Effect:";
+        printWeaponEffect("Haste", header);
+
+        header = "Weapon with Increase Command Gauge Effect:";
+        printWeaponEffect("Increases Command Gauge", header);
+    });
 }
 
 function filterAll() {
@@ -430,8 +497,13 @@ function filterAll() {
 }
 
 function printElemWeapon(elem) {
-    // Removed dropdown toggle - dropdown now stays open for multiple filter selections
+    // Close dropdown after selection
+    closeDropdown();
+
     readDatabase(function() {
+        // Clear output div to remove loading spinner
+        document.getElementById('Output').innerHTML = '';
+
         var elemResist, elemEnchant, elemMateria;
 
         if (elem == "Lightning") {
@@ -462,8 +534,13 @@ function printElemWeapon(elem) {
 }
 
 function printLimitedWeapon(elem, header) {
-    // Removed dropdown toggle - dropdown now stays open for multiple filter selections
+    // Close dropdown after selection
+    closeDropdown();
+
     readDatabase(function() {
+        // Clear output div to remove loading spinner
+        document.getElementById('Output').innerHTML = '';
+
         let elemental;
     elemental = [["Weapon Name", "Char", "AOE", "Type", "ATB", "Element", "Pot%", "Max%", "% per ATB", "Condition"]];
 
@@ -529,8 +606,13 @@ function printLimitedWeapon(elem, header) {
 }
 
 function printAllWeapon(elem, header) {
-    // Removed dropdown toggle - dropdown now stays open for multiple filter selections
+    // Close dropdown after selection
+    closeDropdown();
+
     readDatabase(function() {
+        // Clear output div to remove loading spinner
+        document.getElementById('Output').innerHTML = '';
+
         let elemental;
     elemental = [["Weapon Name", "Char", "AOE", "Type", "ATB", "Element", "Pot%", "Max%", "% per ATB", "Type", "Condition"]];
 
@@ -608,7 +690,7 @@ function printAllWeapon(elem, header) {
 
 
 function printWeaponElem(elem, header) {
-    readDatabase(function() {
+    // No readDatabase call here - called from parent functions that already loaded DB
     let elemental;
     if (elem != "Heal") {
         elemental = [["Weapon Name", "Char", "AOE", "Type", "ATB", "Uses", "Pot%", "Max%", "% per ATB", "Condition"]];
@@ -684,13 +766,12 @@ function printWeaponElem(elem, header) {
         elemental.sort(elementalCompare);
     }
 
-        tableCreate(elemental.length, elemental[0].length, elemental, header);
-    });
+    tableCreate(elemental.length, elemental[0].length, elemental, header);
 }
 
 
 function printWeaponSigil(sigil, header) {
-    readDatabase(function() {
+    // No readDatabase call here - called from parent functions that already loaded DB
     let materia = [["Weapon Name", "Char", "AOE", "Type", "Elem", "ATB", "Uses", "Pot%", "Max%"]];
 
     for (var i = 0; i < weaponDatabase.length; i++) {
@@ -711,11 +792,10 @@ function printWeaponSigil(sigil, header) {
         }
     }
 
-        tableCreate(materia.length, materia[0].length, materia, header);
-    });
+    tableCreate(materia.length, materia[0].length, materia, header);
 }
 function printWeaponMateria(elemMateria, header) {
-    readDatabase(function() {
+    // No readDatabase call here - called from parent functions that already loaded DB
     let materia = [["Weapon Name", "Char", "AOE", "Type", "Elem", "ATB", "Uses", "Pot%", "Max%"]];
 
     for (var i = 0; i < weaponDatabase.length; i++) {
@@ -738,12 +818,11 @@ function printWeaponMateria(elemMateria, header) {
         }
     }
 
-        tableCreate(materia.length, materia[0].length, materia, header);
-    });
+    tableCreate(materia.length, materia[0].length, materia, header);
 }
 
 function printRegenWeapon(header) {
-    readDatabase(function() {
+    // No readDatabase call here - called from parent functions that already loaded DB
     let effect = [["Name", "Char", "Type", "ATB", "Uses", "AOE", "Target", "Duration (s)", "Pot%", "Max%", "% per ATB"]];
     var text = "Regen";
 
@@ -805,12 +884,11 @@ function printRegenWeapon(header) {
         }
     }
 
-        tableCreate(effect.length, effect[0].length, effect, header);
-    });
+    tableCreate(effect.length, effect[0].length, effect, header);
 }
 
 function printWeaponEffect(text, header) {
-    readDatabase(function() {
+    // No readDatabase call here - called from parent functions that already loaded DB
     let effect = [["Name", "Char", "Type", "Elem", "ATB", "Uses", "AOE", "Target", "Pot", "Max Pot", "Duration (s)", "Condition"]];
     for (var i = 0; i < weaponDatabase.length; i++) {
         if ((found = findWeaponWithProperty(weaponDatabase[i], 'effect1', text)) || (found2 = findWeaponWithProperty(weaponDatabase[i], 'effect2', text))
@@ -861,12 +939,11 @@ function printWeaponEffect(text, header) {
         }
     }
 
-        tableCreate(effect.length, effect[0].length, effect, header);
-    });
+    tableCreate(effect.length, effect[0].length, effect, header);
 }
 
 function printWeaponUniqueEffect(text, header) {
-    readDatabase(function() {
+    // No readDatabase call here - called from parent functions that already loaded DB
     let effect = [["Name", "Char", "AOE", "Type", "Elem", "ATB", "Uses", "Target1", "Effect1", "Condition1", "Target2", "Effect2", "Condition2"]];
 
     for (var i = 0; i < weaponDatabase.length; i++) {
@@ -920,8 +997,7 @@ function printWeaponUniqueEffect(text, header) {
         }
     }
 
-        tableCreate(effect.length, effect[0].length, effect, header);
-    });
+    tableCreate(effect.length, effect[0].length, effect, header);
 }
 
 // Load file from local server (async version)
