@@ -7,10 +7,11 @@ Documentation for AI coding agents (Cursor, Windsurf, Aider, Continue, etc.) wor
 **FF7EC Weapon Database** - An interactive single-page web application for browsing and filtering Final Fantasy VII Ever Crisis weapon data.
 
 - **Language**: Vanilla JavaScript (ES5) - No frameworks, no build system
-- **Styling**: Tailwind CSS (`index.html`) + Legacy CSS (`index-legacy.html`)
+- **Styling**: Tailwind CSS (via Tailwind CLI, production build)
 - **Data Source**: CSV file with 434+ weapons, 50+ columns per weapon
 - **Dependencies**: jQuery 3.7.1, DataTables 2.1.8 (loaded from CDN)
-- **Testing**: Jest 29.7.0 with 130+ passing tests
+- **Testing**: Jest 29.7.0 with 150 tests (130 passing, 20 skipped)
+- **Build**: Tailwind CLI for CSS compilation
 
 ## Quick Commands
 
@@ -21,6 +22,12 @@ python -m http.server 8000
 
 # Install dependencies
 npm install
+
+# Build CSS (production)
+npm run build:css
+
+# Watch CSS (development)
+npm run watch:css
 
 # Run tests
 npm test
@@ -46,16 +53,22 @@ User clicks filter → filter*() function → readDatabase() (lazy load CSV)
 
 | File | Purpose | Lines | Notes |
 |------|---------|-------|-------|
-| `index.html` | Modern UI (Main) | - | Hybrid: Tailwind UI + Legacy Config |
+| `index.html` | Main UI | - | Tailwind CSS (production build) |
 | `index-legacy.html` | Legacy UI | 50 | Dropdown menu with 20+ filters |
-| `scripts.js` | Application logic | 1,030 | 45 functions, heavy duplication |
-| `styles.css` | Styling | - | Table layouts for different views |
+| `js/scripts.js` | Core logic | 1,030 | 45 functions, heavy duplication |
+| `js/character-filter.js` | Character filter | 118 | Filter state and UI |
+| `js/table-renderer.js` | Table generation | 111 | Modern Tailwind tables |
+| `js/ui-dropdown.js` | Dropdown toggle | 14 | Click-outside logic |
+| `js/last-update.js` | Last update date | 12 | Date display |
+| `css/styles.css` | Legacy styles | - | Table layouts |
+| `src/input.css` | Tailwind source | 212 | Directives + custom styles |
+| `dist/output.css` | Compiled CSS | 30KB | Production build |
 | `weaponData.csv` | Data | 435 | 50+ columns, parsed with regex |
 
 ### Function Categories (scripts.js)
 
 1. **Pure Functions** (5 functions) - Highly testable
-   - `CSVToArray()` - CSV parser with regex (lines 949-1030)
+   - `CSVToArray()` - CSV parser with regex (lines 949-1030 in js/scripts.js)
    - `findElement()` - Array search (lines 246-250)
    - `getValueFromDatabaseItem()` - Property extraction (lines 251-255)
    - `findWeaponWithProperty()` - Substring matching (lines 256-266)
@@ -68,10 +81,14 @@ User clicks filter → filter*() function → readDatabase() (lazy load CSV)
    - `printRegenWeapon()` - Regen calculation (lines 753-817)
    - And 9 more `printWeapon*()` functions
 
-3. **DOM Manipulation** (3 functions) - Low testability
-   - `tableCreate()` - HTML table generation (lines 20-99)
-   - `sortTable()` - Bubble sort DOM rows (lines 101-172)
-   - `ecSearch()` - Dropdown toggle (lines 14-17)
+3. **DOM Manipulation** (7 functions) - Low testability
+   - `tableCreate()` - HTML table generation (in js/table-renderer.js)
+   - `sortTable()` - Bubble sort DOM rows (in js/scripts.js, lines 101-172)
+   - `ecSearch()` - Dropdown toggle (in js/scripts.js, lines 14-17)
+   - `populateCharacterFilter()` - Character filter UI (in js/character-filter.js)
+   - `toggleCharacterFilter()` - Toggle character selection
+   - `applyCharacterFilter()` - Apply filter to tables
+   - `displayLastUpdateDate()` - Update date display (in js/last-update.js)
 
 4. **Wrapper Functions** (26 functions) - Filter button handlers
    - All `filter*()` functions delegate to `printWeapon*()` functions
@@ -126,8 +143,8 @@ User clicks filter → filter*() function → readDatabase() (lazy load CSV)
 ### Test Structure
 ```
 tests/
-├── setup.js              # Mocks: DataTables, jQuery, console
-├── test-helpers.js       # 13 utility functions
+├── setup.js                     # Mocks: DataTables, jQuery, console
+├── test-helpers.js              # 13 utility functions
 ├── fixtures/
 │   ├── minimal-weapons.csv      # 10 representative weapons
 │   └── mock-weapon-data.js      # Mock generators
@@ -136,7 +153,9 @@ tests/
     ├── filter-logic.test.js     # 43 tests ✅
     ├── sorting.test.js          # 26 tests ✅
     ├── calculations.test.js     # 37 tests ✅
-    └── csv-parser.test.js       # 50+ tests ⚠️ Disabled
+    ├── csv-parser.test.js       # 50+ tests ⚠️ Disabled
+    ├── character-filter.test.js # 12 tests ⏸️ Skipped
+    └── table-renderer.test.js   # 8 tests ⏸️ Skipped
 ```
 
 ### Why CSV Parser Tests Are Disabled
@@ -145,7 +164,7 @@ The `CSVToArray()` function uses complex regex that causes V8 memory allocation 
 
 ### Running Tests
 
-All tests load `scripts.js` using `eval()` since the codebase isn't modularized:
+All tests load `js/scripts.js` using `eval()` since the codebase isn't modularized:
 
 ```javascript
 // DOM must be set up BEFORE eval
@@ -304,11 +323,14 @@ const path = require('path');
 document.body.innerHTML = `
   <div id="ecDropdown"></div>
   <div id="Output"></div>
+  <div id="characterFilterContainer" class="hidden">
+    <div id="characterFilterButtons"></div>
+  </div>
 `;
 
-// Load scripts.js
+// Load js/scripts.js
 const scriptContent = fs.readFileSync(
-  path.join(__dirname, '../../scripts.js'), 'utf8'
+  path.join(__dirname, '../../js/scripts.js'), 'utf8'
 );
 eval(scriptContent);
 
@@ -317,6 +339,72 @@ describe('New Feature', () => {
     // Your test here
   });
 });
+```
+
+## ⚠️ CRITICAL: Testing Requirements
+
+**YOU MUST follow these testing rules for ALL code changes:**
+
+### 1. Before Committing Code
+
+```bash
+# ALWAYS run tests before committing
+npm test
+
+# If building CSS
+npm run build:css
+```
+
+### 2. If Tests Fail
+
+**DO THIS:**
+1. ✅ Review YOUR code changes first
+2. ✅ Debug and understand WHY the test is failing
+3. ✅ Fix your code logic if the test is correct
+4. ✅ Only modify tests if you're CERTAIN they're wrong
+
+**DON'T DO THIS:**
+1. ❌ Skip or disable failing tests
+2. ❌ Modify tests without understanding why they fail
+3. ❌ Commit broken code
+4. ❌ Remove test assertions to make tests pass
+
+### 3. For New Features
+
+**Requirements:**
+- ✅ Write tests BEFORE or ALONGSIDE implementation
+- ✅ Follow existing test patterns in `tests/unit/`
+- ✅ Aim for >90% coverage for pure functions
+- ✅ Add integration tests for complex workflows
+
+**Test Pattern:**
+```javascript
+test('should do specific thing', () => {
+  // Arrange: Set up test data
+  const input = createTestData();
+  
+  // Act: Call the function
+  const result = yourFunction(input);
+  
+  // Assert: Verify the result
+  expect(result).toBe(expected);
+});
+```
+
+### 4. Test Categories
+
+- **Unit Tests**: Pure functions (90%+ coverage required)
+- **Integration Tests**: Workflows (planned)
+- **Manual Tests**: UI/DOM changes (browser testing)
+
+### 5. Build Process
+
+```bash
+# Development: Watch CSS changes
+npm run watch:css
+
+# Production: Build before commit
+npm run build:css
 ```
 
 ## Version Information

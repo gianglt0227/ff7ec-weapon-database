@@ -23,13 +23,20 @@ This is a **Final Fantasy 7 Ever Crisis (FF7EC) Weapon Database** web applicatio
    - `tableCreate()`: Generates HTML tables with DataTables.js integration (lines 20-99)
 
 3. **Presentation Layer**
-   - **Modern UI** ([index3.html](index3.html)): Tailwind CSS based interface. Uses `tableCreate` override to render modern tables while using legacy logic.
-   - **Legacy UI** ([index.html](index.html)): Single dropdown menu with 20+ filter options.
-   - **External Dependencies**: jQuery 3.7.1, DataTables 2.1.8 (CDN), Tailwind CSS (CDN)
+   - **Main UI** ([index.html](index.html)): Tailwind CSS via Tailwind CLI (production build). Modern interface with character filter.
+   - **Legacy UI** ([index-legacy.html](index-legacy.html)): Original dropdown interface.
+   - **JavaScript Modules**:
+     - [js/scripts.js](js/scripts.js): Core application logic
+     - [js/character-filter.js](js/character-filter.js): Character filter state and UI
+     - [js/table-renderer.js](js/table-renderer.js): Modern table generation
+     - [js/ui-dropdown.js](js/ui-dropdown.js): Dropdown toggle logic
+     - [js/last-update.js](js/last-update.js): Last update date display
+   - **External Dependencies**: jQuery 3.7.1, DataTables 2.1.8 (CDN)
 
-4. **Styling** ([styles.css](styles.css))
-   - Different table classes for different filter types: `elemTable`, `materiaTable`, `statusTable`, `uniqueTable`, `effectTable`
-   - Responsive width handling for various column configurations
+4. **Styling**
+   - [css/styles.css](css/styles.css): Legacy table styles
+   - [src/input.css](src/input.css): Tailwind CSS source with directives
+   - [dist/output.css](dist/output.css): Compiled Tailwind CSS (30KB, production build)
 
 ### Data Flow
 
@@ -78,8 +85,8 @@ npm run test:coverage
 #### Test Structure
 ```
 tests/
-├── setup.js              # Global mocks (DataTables, jQuery, console)
-├── test-helpers.js       # 13 utility functions for tests
+├── setup.js                     # Global mocks (DataTables, jQuery, console)
+├── test-helpers.js              # 13 utility functions for tests
 ├── fixtures/
 │   ├── minimal-weapons.csv      # 10 test weapons
 │   └── mock-weapon-data.js      # Mock data generators
@@ -88,13 +95,16 @@ tests/
     ├── filter-logic.test.js     # 43 tests ✅
     ├── sorting.test.js          # 26 tests ✅
     ├── calculations.test.js     # 37 tests ✅
-    └── csv-parser.test.js       # 50+ tests (disabled - V8 memory issue)
+    ├── csv-parser.test.js       # 50+ tests (disabled - V8 memory issue)
+    ├── character-filter.test.js # 12 tests (skipped - needs module refactoring)
+    └── table-renderer.test.js   # 8 tests (skipped - needs module refactoring)
 ```
 
 #### Test Coverage
-- **130 tests passing** in < 1 second
+- **150 tests total** (130 passing, 20 skipped)
 - **Pure functions**: 95%+ coverage (array utilities, filters, sorting, calculations)
-- **Integration tests**: Planned for Phase 4-6 (see [TEST-IMPLEMENTATION-SUMMARY.md](TEST-IMPLEMENTATION-SUMMARY.md))
+- **New modules**: Character filter and table renderer tests created but skipped pending module refactoring
+- **Integration tests**: Planned for future phases
 
 #### Manual Testing
 For UI/integration testing:
@@ -205,4 +215,33 @@ See **Testing** section above for commands and workflow.
 ### Known Issues
 - CSV parser tests temporarily disabled due to V8 memory allocation error when evaluating regex in test environment
 - Function works correctly in production/browser environment
+- Character filter and table renderer tests are skipped (modules need refactoring for testability)
 - Issue isolated to test execution only
+
+## ⚠️ CRITICAL: Testing Requirements
+
+**Before making ANY code changes:**
+
+1. **ALWAYS run `npm test`** before committing
+2. **If tests fail after your changes:**
+   - Review YOUR code logic first
+   - Debug and understand WHY the test is failing
+   - Only modify tests if you're certain they're incorrect
+3. **For new features:**
+   - Write tests BEFORE or ALONGSIDE implementation
+   - Follow existing test patterns in `tests/unit/`
+   - Aim for >90% coverage for pure functions
+4. **Test types:**
+   - Unit tests for logic functions
+   - Integration tests for workflows (future)
+   - Manual testing for UI/DOM changes
+
+**Do NOT:**
+- Skip or disable tests to make your code "pass"
+- Modify tests without understanding the original intent
+- Commit code that breaks existing tests
+- Add features without corresponding tests
+
+**Build Process:**
+- Run `npm run build:css` before committing CSS changes
+- Use `npm run watch:css` during development

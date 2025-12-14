@@ -49,26 +49,46 @@ npm run test:coverage
 
 ```
 ff7ec-weapon-database/
-├── index.html              # NEW: Modern Application (Use this)
-├── index-legacy.html       # Legacy Application
-├── scripts.js              # Core application logic (1,030 lines)
-├── styles.css              # Styling and table layouts
+├── index.html              # Main application (Tailwind + Tailwind CLI)
+├── index-legacy.html       # Legacy application
+├── js/
+│   ├── scripts.js          # Core application logic (1,030 lines)
+│   ├── character-filter.js # Character filter state and UI
+│   ├── table-renderer.js   # Modern table generation with Tailwind
+│   ├── ui-dropdown.js      # Dropdown toggle logic
+│   └── last-update.js      # Last update date display
+├── css/
+│   └── styles.css          # Legacy table layouts
+├── src/
+│   └── input.css           # Tailwind CSS source
+├── dist/
+│   └── output.css          # Compiled Tailwind CSS (30KB)
 ├── weaponData.csv          # Complete weapon database (434+ weapons)
-├── package.json            # npm configuration with test scripts
+├── tailwind.config.js      # Tailwind configuration
+├── package.json            # npm configuration with test and build scripts
 ├── jest.config.js          # Jest test configuration
 ├── tests/
 │   ├── setup.js           # Test environment setup
 │   ├── test-helpers.js    # Test utility functions
 │   ├── fixtures/          # Test data and mocks
-│   └── unit/              # Unit tests (130+ tests)
+│   └── unit/              # Unit tests (150 tests total, 130 passing)
+│       ├── array-utilities.test.js
+│       ├── filter-logic.test.js
+│       ├── sorting.test.js
+│       ├── calculations.test.js
+│       ├── csv-parser.test.js
+│       ├── character-filter.test.js (skipped)
+│       └── table-renderer.test.js (skipped)
 ├── CLAUDE.md              # Claude Code documentation
+├── AGENTS.md              # AI agents documentation
 └── README.md              # This file
 ```
 
 ## Technology Stack
 
 - **Frontend**: Vanilla JavaScript (ES5), HTML5
-- **Styling**: Tailwind CSS (via CDN), Google Fonts (Cinzel, Inter)
+- **Styling**: Tailwind CSS (via Tailwind CLI, production build), Google Fonts (Cinzel, Inter)
+- **Build**: Tailwind CLI for CSS compilation
 - **Dependencies**: jQuery 3.7.1, DataTables 2.1.8
 - **Testing**: Jest 29.7.0, jsdom
 - **Data Format**: CSV (50+ columns per weapon)
@@ -89,7 +109,7 @@ See [CLAUDE.md](CLAUDE.md) for detailed architecture documentation.
 
 The project includes a comprehensive Jest test suite:
 
-- **130 passing tests** across 4 test suites
+- **150 tests total** (130 passing, 20 skipped)
 - **95%+ coverage** for pure functions
 - **< 1 second** execution time
 - Full documentation in [tests/README.md](tests/README.md)
@@ -99,6 +119,18 @@ Test categories:
 - Filter logic (43 tests)
 - Sorting algorithms (26 tests)
 - Calculations (37 tests)
+- Character filter (12 tests, skipped)
+- Table renderer (8 tests, skipped)
+
+> **⚠️ CRITICAL: Testing Requirements for All Code Changes**
+>
+> Before committing any code changes:
+> 1. **ALWAYS run `npm test`** to ensure no existing tests are broken
+> 2. **If tests fail**: Review your code logic first before modifying tests
+> 3. **For new features**: Write tests to cover the new functionality
+> 4. **Test categories**: Unit tests for logic, integration tests for workflows
+>
+> Skipping tests or modifying them without understanding why they fail can introduce bugs.
 
 ## Contributing
 
