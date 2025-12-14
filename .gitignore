@@ -51,7 +51,6 @@ tmp/
 temp/
 
 # Build Output (if applicable in future)
-dist/
 build/
 out/
 
@@ -83,6 +82,3 @@ ehthumbs_vista.db
 
 # Optional: Include if you have local development server files
 # .http-server/
-
-# Build output
-dist/
