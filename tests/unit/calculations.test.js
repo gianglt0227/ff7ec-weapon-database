@@ -7,6 +7,11 @@
 
 const fs = require('fs');
 const path = require('path');
+
+// Load weapon-metadata.js first (dependency of scripts.js)
+const weaponMetadataPath = path.join(__dirname, '../../js/weapon-metadata.js');
+const weaponMetadataContent = fs.readFileSync(weaponMetadataPath, 'utf8');
+
 const scriptPath = path.join(__dirname, '../../js/scripts.js');
 const scriptContent = fs.readFileSync(scriptPath, 'utf8');
 
@@ -16,6 +21,7 @@ document.body.innerHTML = `
   <div id="Output" class="output"></div>
 `;
 
+eval(weaponMetadataContent);
 eval(scriptContent);
 
 describe('Calculation Logic', () => {
@@ -272,6 +278,68 @@ describe('Calculation Logic', () => {
       scenarios.forEach(({ pot, maxPot, hasCondition }) => {
         const result = maxPot > pot;
         expect(result).toBe(hasCondition);
+      });
+    });
+  });
+
+  describe('Weapon Metadata Functions', () => {
+    describe('shouldShowCondition()', () => {
+      test('should return true for Bahamut Greatsword (special weapon)', () => {
+        expect(shouldShowCondition("Bahamut Greatsword", 100, 100)).toBe(true);
+      });
+
+      test('should return true for Sabin\'s Claws (special weapon)', () => {
+        expect(shouldShowCondition("Sabin's Claws", 100, 100)).toBe(true);
+      });
+
+      test('should return true for Blade of the Worthy (special weapon)', () => {
+        expect(shouldShowCondition("Blade of the Worthy", 100, 100)).toBe(true);
+      });
+
+      test('should return true for Umbral Blade (special weapon)', () => {
+        expect(shouldShowCondition("Umbral Blade", 100, 100)).toBe(true);
+      });
+
+      test('should return true when maxPot > pot for normal weapons', () => {
+        expect(shouldShowCondition("Normal Sword", 100, 150)).toBe(true);
+        expect(shouldShowCondition("Test Weapon", 200, 250)).toBe(true);
+      });
+
+      test('should return false when maxPot == pot for normal weapons', () => {
+        expect(shouldShowCondition("Normal Sword", 100, 100)).toBe(false);
+        expect(shouldShowCondition("Test Weapon", 200, 200)).toBe(false);
+      });
+    });
+
+    describe('getWeaponCondition()', () => {
+      test('should return condition1 when effect1 contains "DMG"', () => {
+        const weapon = [
+          { name: "effect1", value: "Fire DMG +10%" },
+          { name: "condition1", value: "HP > 50%" },
+          { name: "effect2", value: "ATK +5%" },
+          { name: "condition2", value: "Always" }
+        ];
+        expect(getWeaponCondition(weapon)).toBe("HP > 50%");
+      });
+
+      test('should return condition2 when effect1 does not contain "DMG"', () => {
+        const weapon = [
+          { name: "effect1", value: "ATK +10%" },
+          { name: "condition1", value: "HP > 50%" },
+          { name: "effect2", value: "Ice DMG +15%" },
+          { name: "condition2", value: "HP < 30%" }
+        ];
+        expect(getWeaponCondition(weapon)).toBe("HP < 30%");
+      });
+
+      test('should handle weapons with no DMG keyword', () => {
+        const weapon = [
+          { name: "effect1", value: "ATK +5%" },
+          { name: "condition1", value: "Always" },
+          { name: "effect2", value: "DEF +10%" },
+          { name: "condition2", value: "When buffed" }
+        ];
+        expect(getWeaponCondition(weapon)).toBe("When buffed");
       });
     });
   });
