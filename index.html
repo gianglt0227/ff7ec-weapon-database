@@ -94,46 +94,67 @@
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-0.5 p-2">
                             <a onclick="filterFire()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400 rounded-md transition-colors group">
-                                <span
-                                    class="w-2 h-2 rounded-full bg-red-500 mr-3 group-hover:scale-125 transition-transform"></span>
-                                Fire
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400 rounded-md transition-colors group">
+                                <div class="flex items-center">
+                                    <span
+                                        class="w-2 h-2 rounded-full bg-red-500 mr-3 group-hover:scale-125 transition-transform"></span>
+                                    Fire
+                                </div>
+                                <span id="filter-fire" class="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterIce()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-cyan-50 hover:text-cyan-600 dark:hover:bg-cyan-900/20 dark:hover:text-cyan-400 rounded-md transition-colors group">
-                                <span
-                                    class="w-2 h-2 rounded-full bg-cyan-400 mr-3 group-hover:scale-125 transition-transform"></span>
-                                Ice
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-cyan-50 hover:text-cyan-600 dark:hover:bg-cyan-900/20 dark:hover:text-cyan-400 rounded-md transition-colors group">
+                                <div class="flex items-center">
+                                    <span
+                                        class="w-2 h-2 rounded-full bg-cyan-400 mr-3 group-hover:scale-125 transition-transform"></span>
+                                    Ice
+                                </div>
+                                <span id="filter-ice" class="bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterLightning()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-yellow-50 hover:text-yellow-600 dark:hover:bg-yellow-900/20 dark:hover:text-yellow-400 rounded-md transition-colors group">
-                                <span
-                                    class="w-2 h-2 rounded-full bg-yellow-400 mr-3 group-hover:scale-125 transition-transform"></span>
-                                Lightning
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-yellow-50 hover:text-yellow-600 dark:hover:bg-yellow-900/20 dark:hover:text-yellow-400 rounded-md transition-colors group">
+                                <div class="flex items-center">
+                                    <span
+                                        class="w-2 h-2 rounded-full bg-yellow-400 mr-3 group-hover:scale-125 transition-transform"></span>
+                                    Lightning
+                                </div>
+                                <span id="filter-lightning" class="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterWater()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20 dark:hover:text-blue-400 rounded-md transition-colors group">
-                                <span
-                                    class="w-2 h-2 rounded-full bg-blue-500 mr-3 group-hover:scale-125 transition-transform"></span>
-                                Water
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20 dark:hover:text-blue-400 rounded-md transition-colors group">
+                                <div class="flex items-center">
+                                    <span
+                                        class="w-2 h-2 rounded-full bg-blue-500 mr-3 group-hover:scale-125 transition-transform"></span>
+                                    Water
+                                </div>
+                                <span id="filter-water" class="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterWind()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/20 dark:hover:text-green-400 rounded-md transition-colors group">
-                                <span
-                                    class="w-2 h-2 rounded-full bg-green-500 mr-3 group-hover:scale-125 transition-transform"></span>
-                                Wind
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/20 dark:hover:text-green-400 rounded-md transition-colors group">
+                                <div class="flex items-center">
+                                    <span
+                                        class="w-2 h-2 rounded-full bg-green-500 mr-3 group-hover:scale-125 transition-transform"></span>
+                                    Wind
+                                </div>
+                                <span id="filter-wind" class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterEarth()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-900/20 dark:hover:text-orange-400 rounded-md transition-colors group">
-                                <span
-                                    class="w-2 h-2 rounded-full bg-orange-600 mr-3 group-hover:scale-125 transition-transform"></span>
-                                Earth
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-900/20 dark:hover:text-orange-400 rounded-md transition-colors group">
+                                <div class="flex items-center">
+                                    <span
+                                        class="w-2 h-2 rounded-full bg-orange-600 mr-3 group-hover:scale-125 transition-transform"></span>
+                                    Earth
+                                </div>
+                                <span id="filter-earth" class="bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterNonElem()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white rounded-md transition-colors group sm:col-span-2">
-                                <span
-                                    class="w-2 h-2 rounded-full bg-gray-400 mr-3 group-hover:scale-125 transition-transform"></span>
-                                Non-Elemental
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white rounded-md transition-colors group sm:col-span-2">
+                                <div class="flex items-center">
+                                    <span
+                                        class="w-2 h-2 rounded-full bg-gray-400 mr-3 group-hover:scale-125 transition-transform"></span>
+                                    Non-Elemental
+                                </div>
+                                <span id="filter-none" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                         </div>
 
@@ -145,24 +166,36 @@
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-0.5 p-2">
                             <a onclick="filterPatkDown()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors">
-                                <span
-                                    class="material-symbols-outlined text-sm mr-2 text-purple-500">trending_down</span>
-                                PATK
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span
+                                        class="material-symbols-outlined text-sm mr-2 text-purple-500">trending_down</span>
+                                    PATK
+                                </div>
+                                <span id="filter-patk-down" class="bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterMatkDown()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors">
-                                <span
-                                    class="material-symbols-outlined text-sm mr-2 text-purple-500">trending_down</span>
-                                MATK
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span
+                                        class="material-symbols-outlined text-sm mr-2 text-purple-500">trending_down</span>
+                                    MATK
+                                </div>
+                                <span id="filter-matk-down" class="bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterPdefDown()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors">
-                                <span class="material-symbols-outlined text-sm mr-2 text-purple-500">shield</span> PDEF
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-2 text-purple-500">shield</span> PDEF
+                                </div>
+                                <span id="filter-pdef-down" class="bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterMdefDown()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors">
-                                <span class="material-symbols-outlined text-sm mr-2 text-purple-500">shield</span> MDEF
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-2 text-purple-500">shield</span> MDEF
+                                </div>
+                                <span id="filter-mdef-down" class="bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                         </div>
 
@@ -174,31 +207,46 @@
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-0.5 p-2">
                             <a onclick="filterPatkUp()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors">
-                                <span class="material-symbols-outlined text-sm mr-2 text-indigo-500">trending_up</span>
-                                PATK
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-2 text-indigo-500">trending_up</span>
+                                    PATK
+                                </div>
+                                <span id="filter-patk-up" class="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterMatkUp()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors">
-                                <span class="material-symbols-outlined text-sm mr-2 text-indigo-500">trending_up</span>
-                                MATK
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-2 text-indigo-500">trending_up</span>
+                                    MATK
+                                </div>
+                                <span id="filter-matk-up" class="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterPdefUp()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors">
-                                <span
-                                    class="material-symbols-outlined text-sm mr-2 text-indigo-500">shield_with_heart</span>
-                                PDEF
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span
+                                        class="material-symbols-outlined text-sm mr-2 text-indigo-500">shield_with_heart</span>
+                                    PDEF
+                                </div>
+                                <span id="filter-pdef-up" class="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterMdefUp()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors">
-                                <span
-                                    class="material-symbols-outlined text-sm mr-2 text-indigo-500">shield_with_heart</span>
-                                MDEF
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span
+                                        class="material-symbols-outlined text-sm mr-2 text-indigo-500">shield_with_heart</span>
+                                    MDEF
+                                </div>
+                                <span id="filter-mdef-up" class="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterExploitWeakness()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors sm:col-span-2">
-                                <span class="material-symbols-outlined text-sm mr-2 text-indigo-500">target</span>
-                                Exploit Weakness
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-300 rounded-md transition-colors sm:col-span-2">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-2 text-indigo-500">target</span>
+                                    Exploit Weakness
+                                </div>
+                                <span id="filter-exploit" class="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                         </div>
 
@@ -211,20 +259,29 @@
                         </div>
                         <div class="p-2 space-y-1">
                             <a onclick="filterHeal()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-green-50 hover:text-green-700 dark:hover:bg-green-900/20 dark:hover:text-green-300 rounded-md transition-colors">
-                                <span
-                                    class="material-symbols-outlined text-sm mr-3 text-green-500">medical_services</span>
-                                Heal
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-green-50 hover:text-green-700 dark:hover:bg-green-900/20 dark:hover:text-green-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span
+                                        class="material-symbols-outlined text-sm mr-3 text-green-500">medical_services</span>
+                                    Heal
+                                </div>
+                                <span id="filter-heal" class="bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterProvoke()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-gray-900 dark:hover:bg-gray-700 rounded-md transition-colors">
-                                <span class="material-symbols-outlined text-sm mr-3 text-gray-400">campaign</span>
-                                Provoke/Veil
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-gray-900 dark:hover:bg-gray-700 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-3 text-gray-400">campaign</span>
+                                    Provoke/Veil
+                                </div>
+                                <span id="filter-provoke" class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterLimited()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-yellow-50 hover:text-yellow-700 dark:hover:bg-yellow-900/20 dark:hover:text-yellow-300 rounded-md transition-colors">
-                                <span class="material-symbols-outlined text-sm mr-3 text-yellow-500">star</span>
-                                Limited/Crossover
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-yellow-50 hover:text-yellow-700 dark:hover:bg-yellow-900/20 dark:hover:text-yellow-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-3 text-yellow-500">star</span>
+                                    Limited/Crossover
+                                </div>
+                                <span id="filter-limited" class="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                         </div>
 
@@ -236,32 +293,47 @@
                         </div>
                         <div class="grid grid-cols-2 gap-0.5 p-2">
                             <a onclick="filterCircleSigilMateria()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors">
-                                <span class="material-symbols-outlined text-sm mr-2 text-gray-400">circle</span> O Sigil
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-2 text-gray-400">circle</span> O Sigil
+                                </div>
+                                <span id="filter-circle" class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterTriangleSigilMateria()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors">
-                                <span class="material-symbols-outlined text-sm mr-2 text-gray-400">change_history</span>
-                                Δ Sigil
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-2 text-gray-400">change_history</span>
+                                    Δ Sigil
+                                </div>
+                                <span id="filter-triangle" class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterXSigilMateria()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors">
-                                <span class="material-symbols-outlined text-sm mr-2 text-gray-400">close</span> X Sigil
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-2 text-gray-400">close</span> X Sigil
+                                </div>
+                                <span id="filter-x-sigil" class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                             <a onclick="filterDiamondMateria()"
-                                class="cursor-pointer flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors">
-                                <span class="material-symbols-outlined text-sm mr-2 text-gray-400">diamond</span> ◇
-                                Sigil
+                                class="cursor-pointer flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined text-sm mr-2 text-gray-400">diamond</span> ◇
+                                    Sigil
+                                </div>
+                                <span id="filter-diamond" class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                         </div>
 
                         <!-- Header: Unique -->
                         <div class="p-2 border-t border-gray-100 dark:border-gray-700">
                             <a onclick="filterUniqueEffect()"
-                                class="cursor-pointer flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors">
-                                <span
-                                    class="material-symbols-outlined text-sm mr-3 text-purple-500">auto_fix_high</span>
-                                Status/Enfeeble/Stop/Unique
+                                class="cursor-pointer flex items-center justify-between px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 hover:text-purple-700 dark:hover:bg-purple-900/20 dark:hover:text-purple-300 rounded-md transition-colors">
+                                <div class="flex items-center">
+                                    <span
+                                        class="material-symbols-outlined text-sm mr-3 text-purple-500">auto_fix_high</span>
+                                    Status/Enfeeble/Stop/Unique
+                                </div>
+                                <span id="filter-unique" class="bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
                             </a>
                         </div>
 
@@ -269,9 +341,10 @@
                         <div
                             class="p-2 border-t border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/20">
                             <a onclick="filterAll()"
-                                class="cursor-pointer flex items-center justify-center px-4 py-3 text-sm font-semibold text-primary hover:text-white hover:bg-primary dark:hover:bg-primary dark:hover:text-white rounded-md transition-all">
-                                View All Weapons
-                                <span class="material-symbols-outlined text-sm ml-2">arrow_forward</span>
+                                class="cursor-pointer flex items-center justify-center px-4 py-3 text-sm font-semibold text-primary hover:text-white hover:bg-primary dark:hover:bg-primary dark:hover:text-white rounded-md transition-all group">
+                                <span>View All Weapons</span>
+                                <span id="filter-all" class="mx-2 bg-primary/10 text-primary group-hover:bg-white group-hover:text-primary rounded-full px-2.5 py-0.5 text-xs font-semibold">0</span>
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
                             </a>
                         </div>
                     </div>
@@ -304,6 +377,17 @@
                         class="text-xs text-text-muted-light dark:text-text-muted-dark hover:text-gray-900 dark:hover:text-gray-100 font-medium transition-colors">Clear</button>
                 </div>
             </div>
+
+            <!-- Active Filter Indicator -->
+            <div id="characterFilterIndicator" class="hidden mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-semibold text-gray-600 dark:text-gray-400">Excluding:</span>
+                    <div id="characterExcludedList" class="flex flex-wrap gap-1.5">
+                        <!-- Chips will be injected here -->
+                    </div>
+                </div>
+            </div>
+
             <div id="characterFilterEmpty" class="py-8 text-center">
                 <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-4xl mb-3">person_search</span>
                 <p class="text-sm text-gray-500 dark:text-gray-400">Character filter will appear after running your first search</p>

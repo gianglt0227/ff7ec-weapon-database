@@ -37,6 +37,33 @@ function populateCharacterFilter(dataList) {
     const container = document.getElementById('characterFilterButtons');
     container.innerHTML = '';
 
+    // Count weapons per character
+    const characterCounts = {};
+    sortedChars.forEach(char => {
+        characterCounts[char] = 0;
+    });
+
+    // Count from weaponDatabase if available (most accurate)
+    if (typeof weaponDatabase !== 'undefined' && weaponDatabase.length > 0) {
+        weaponDatabase.forEach(item => {
+            const charObj = item.find(p => p.name === "charName");
+            if (charObj && charObj.value) {
+                const charName = charObj.value.trim();
+                if (characterCounts.hasOwnProperty(charName)) {
+                    characterCounts[charName]++;
+                }
+            }
+        });
+    } else {
+        // Fallback: count from current table data
+        for (let i = 1; i < dataList.length; i++) {
+            const charName = dataList[i][1];
+            if (charName && characterCounts.hasOwnProperty(charName.trim())) {
+                characterCounts[charName.trim()]++;
+            }
+        }
+    }
+
     // If state is empty (first run), select all
     const isFirstRun = characterFilterState.size === 0;
 
@@ -50,7 +77,13 @@ function populateCharacterFilter(dataList) {
             ? 'bg-primary/10 border-primary text-primary-dark dark:text-primary ring-1 ring-primary/20'
             : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
             }`;
-        btn.textContent = char;
+
+        // Add character name and count badge
+        const count = characterCounts[char] || 0;
+        btn.innerHTML = `
+            <span>${char}</span>
+            <span class="ml-1.5 opacity-60 text-[10px]">(${count})</span>
+        `;
         btn.dataset.char = char;
 
         btn.onclick = () => toggleCharacterFilter(char, btn);
@@ -61,6 +94,9 @@ function populateCharacterFilter(dataList) {
     document.getElementById('characterFilterEmpty').classList.add('hidden');
     document.getElementById('characterFilterButtons').classList.remove('hidden');
     document.getElementById('characterFilterActions').classList.remove('hidden');
+
+    // Initialize filter indicator
+    updateFilterIndicator();
 }
 
 function toggleCharacterFilter(char, btn) {
@@ -74,18 +110,21 @@ function toggleCharacterFilter(char, btn) {
         btn.className = 'px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border select-none bg-primary/10 border-primary text-primary-dark dark:text-primary ring-1 ring-primary/20';
     }
     applyCharacterFilter();
+    updateFilterIndicator();
 }
 
 function selectAllCharacters() {
     allCharacters.forEach(char => characterFilterState.add(char));
     updateFilterButtonsUI();
     applyCharacterFilter();
+    updateFilterIndicator();
 }
 
 function deselectAllCharacters() {
     characterFilterState.clear();
     updateFilterButtonsUI();
     applyCharacterFilter();
+    updateFilterIndicator();
 }
 
 function updateFilterButtonsUI() {
@@ -97,6 +136,27 @@ function updateFilterButtonsUI() {
         } else {
             btn.className = 'px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border select-none bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600';
         }
+    }
+}
+
+function updateFilterIndicator() {
+    const indicator = document.getElementById('characterFilterIndicator');
+    const excludedList = document.getElementById('characterExcludedList');
+
+    // Calculate excluded characters (those NOT in characterFilterState)
+    const excluded = allCharacters.filter(char => !characterFilterState.has(char));
+
+    if (excluded.length === 0 || excluded.length === allCharacters.length) {
+        // Hide indicator if all or none are excluded
+        indicator.classList.add('hidden');
+    } else {
+        // Show indicator with excluded characters as chips
+        indicator.classList.remove('hidden');
+        excludedList.innerHTML = excluded.map(char =>
+            `<span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700">
+                ${char}
+            </span>`
+        ).join('');
     }
 }
 

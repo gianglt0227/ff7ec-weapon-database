@@ -11,6 +11,8 @@ const MATERIA_TABL_COL = 8;
 const UNIQUE_TABL_COL = 12;
 const MAX_POT_INDEX = 6;   // Index into the maxPot for sorting
 let weaponDatabase = [];
+let filterCounts = {}; // Store pre-calculated counts
+
 function ecSearch() {
     document.getElementById("ecDropdown").classList.toggle("show");
     var divToPrint = document.getElementById('Output');
@@ -254,7 +256,179 @@ function readDatabase(callback) {
 
         // Hide loading spinner and execute callback
         hideLoadingSpinner();
+        calculateFilterCounts();
         if (callback) callback();
+    });
+}
+
+/**
+ * Calculate weapon counts for all filters
+ * Called once after database loads
+ */
+function calculateFilterCounts() {
+    filterCounts = {
+        // Elements
+        fire: countWeaponsWithProperty('element', 'Fire'),
+        ice: countWeaponsWithProperty('element', 'Ice'),
+        lightning: countWeaponsWithProperty('element', 'Lightning'),
+        water: countWeaponsWithProperty('element', 'Water'),
+        wind: countWeaponsWithProperty('element', 'Wind'),
+        earth: countWeaponsWithProperty('element', 'Earth'),
+        none: countWeaponsWithProperty('element', 'None'),
+        heal: countWeaponsWithProperty('element', 'Heal'),
+
+        // Stat debuffs/buffs
+        matkDown: countWeaponsWithEffect('[Debuff] MATK'),
+        patkDown: countWeaponsWithEffect('[Debuff] PATK'),
+        pdefDown: countWeaponsWithEffect('[Debuff] PDEF'),
+        mdefDown: countWeaponsWithEffect('[Debuff] MDEF'),
+        patkUp: countWeaponsWithEffect('[Buff] PATK'),
+        matkUp: countWeaponsWithEffect('[Buff] MATK'),
+        pdefUp: countWeaponsWithEffect('[Buff] PDEF'),
+        mdefUp: countWeaponsWithEffect('[Buff] MDEF'),
+
+        // Special
+        limited: countWeaponsWithProperty('gachaType', 'L'),
+        circle: countWeaponsWithMateria('Circle'),
+        triangle: countWeaponsWithMateria('Triangle'),
+        xSigil: countWeaponsWithMateria('X Sigil'),
+        diamond: countWeaponsWithProperty('sigil', 'Diamond'),
+        exploitWeakness: countWeaponsWithEffect('[Buff] Weakness'),
+        provoke: countWeaponsWithEffect('[Buff] Provoke'),
+        unique: countUniqueEffects(),
+
+        // Total
+        all: weaponDatabase.length
+    };
+
+    updateFilterBadges();
+}
+
+/**
+ * Count weapons with specific property value
+ */
+function countWeaponsWithProperty(propertyName, propertyValue) {
+    let count = 0;
+    for (let i = 0; i < weaponDatabase.length; i++) {
+        if (findWeaponWithProperty(weaponDatabase[i], propertyName, propertyValue)) {
+            count++;
+        }
+    }
+    return count;
+}
+
+/**
+ * Count weapons with effect in effect1, effect2, or effect3
+ */
+function countWeaponsWithEffect(effectName) {
+    let count = 0;
+    for (let i = 0; i < weaponDatabase.length; i++) {
+        if (findWeaponWithProperty(weaponDatabase[i], 'effect1', effectName) ||
+            findWeaponWithProperty(weaponDatabase[i], 'effect2', effectName) ||
+            findWeaponWithProperty(weaponDatabase[i], 'effect3', effectName)) {
+            count++;
+        }
+    }
+    return count;
+}
+
+/**
+ * Count weapons with materia in support1, support2, or support3
+ */
+function countWeaponsWithMateria(materiaType) {
+    let count = 0;
+    for (let i = 0; i < weaponDatabase.length; i++) {
+        if (findWeaponWithProperty(weaponDatabase[i], 'support1', materiaType) ||
+            findWeaponWithProperty(weaponDatabase[i], 'support2', materiaType) ||
+            findWeaponWithProperty(weaponDatabase[i], 'support3', materiaType)) {
+            count++;
+        }
+    }
+    return count;
+}
+
+/**
+ * Count weapons with unique effects (Status Apply/Cleanse, Dispel, Haste, Command Gauge)
+ */
+function countUniqueEffects() {
+    const uniqueWeapons = new Set();
+
+    for (let i = 0; i < weaponDatabase.length; i++) {
+        const weapon = weaponDatabase[i];
+        const weaponName = findWeaponWithProperty(weapon, 'name', null);
+
+        // Check for Status Apply, Status Cleanse, or Dispel
+        if (findWeaponWithProperty(weapon, 'effect1', '[Status Apply]') ||
+            findWeaponWithProperty(weapon, 'effect2', '[Status Apply]') ||
+            findWeaponWithProperty(weapon, 'effect3', '[Status Apply]') ||
+            findWeaponWithProperty(weapon, 'effect1', '[Status Cleanse]') ||
+            findWeaponWithProperty(weapon, 'effect2', '[Status Cleanse]') ||
+            findWeaponWithProperty(weapon, 'effect3', '[Status Cleanse]')) {
+            if (weaponName) uniqueWeapons.add(weaponName);
+            continue;
+        }
+
+        // Check for Dispel (partial match)
+        const effect1 = weapon.find(p => p.name === 'effect1')?.value || '';
+        const effect2 = weapon.find(p => p.name === 'effect2')?.value || '';
+        const effect3 = weapon.find(p => p.name === 'effect3')?.value || '';
+
+        if (effect1.includes('[Dispel') || effect2.includes('[Dispel') || effect3.includes('[Dispel')) {
+            if (weaponName) uniqueWeapons.add(weaponName);
+            continue;
+        }
+
+        // Check for Haste or Command Gauge
+        if (findWeaponWithProperty(weapon, 'effect1', 'Haste') ||
+            findWeaponWithProperty(weapon, 'effect2', 'Haste') ||
+            findWeaponWithProperty(weapon, 'effect3', 'Haste') ||
+            findWeaponWithProperty(weapon, 'effect1', 'Increases Command Gauge') ||
+            findWeaponWithProperty(weapon, 'effect2', 'Increases Command Gauge') ||
+            findWeaponWithProperty(weapon, 'effect3', 'Increases Command Gauge')) {
+            if (weaponName) uniqueWeapons.add(weaponName);
+        }
+    }
+
+    return uniqueWeapons.size;
+}
+
+/**
+ * Update count badges in dropdown menu
+ */
+function updateFilterBadges() {
+    const badgeMap = {
+        'filter-fire': filterCounts.fire,
+        'filter-ice': filterCounts.ice,
+        'filter-lightning': filterCounts.lightning,
+        'filter-water': filterCounts.water,
+        'filter-wind': filterCounts.wind,
+        'filter-earth': filterCounts.earth,
+        'filter-none': filterCounts.none,
+        'filter-heal': filterCounts.heal,
+        'filter-matk-down': filterCounts.matkDown,
+        'filter-patk-down': filterCounts.patkDown,
+        'filter-pdef-down': filterCounts.pdefDown,
+        'filter-mdef-down': filterCounts.mdefDown,
+        'filter-patk-up': filterCounts.patkUp,
+        'filter-matk-up': filterCounts.matkUp,
+        'filter-pdef-up': filterCounts.pdefUp,
+        'filter-mdef-up': filterCounts.mdefUp,
+        'filter-limited': filterCounts.limited,
+        'filter-circle': filterCounts.circle,
+        'filter-triangle': filterCounts.triangle,
+        'filter-x-sigil': filterCounts.xSigil,
+        'filter-diamond': filterCounts.diamond,
+        'filter-exploit': filterCounts.exploitWeakness,
+        'filter-provoke': filterCounts.provoke,
+        'filter-unique': filterCounts.unique,
+        'filter-all': filterCounts.all
+    };
+
+    Object.keys(badgeMap).forEach(id => {
+        const badge = document.getElementById(id);
+        if (badge) {
+            badge.textContent = badgeMap[id];
+        }
     });
 }
 
