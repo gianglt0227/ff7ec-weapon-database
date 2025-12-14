@@ -387,22 +387,86 @@ function updateFilterBadges() {
     });
 }
 
-// Find elements in an array
+/**
+ * Find an element in an array by property name and value
+ * @param {Array} arr - Array to search
+ * @param {string} propName - Property name to match
+ * @param {*} propValue - Property value to match
+ * @returns {Object|undefined} Found element or undefined
+ */
 function findElement(arr, propName, propValue) {
-    for (let i = 0; i < arr.length; i++)
-        if (arr[i][propName] == propValue)
-            return arr[i];
-}
-function getValueFromDatabaseItem(item, name) {
-    const i = findElement(item, "name", name);
+    // Input validation
+    if (!Array.isArray(arr)) {
+        console.error('findElement: arr must be an array', arr);
+        return undefined;
+    }
+    if (!propName) {
+        console.error('findElement: propName is required');
+        return undefined;
+    }
 
-    return i["value"];
-}
-function findWeaponWithProperty(arr, propName, propValue) {
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i].name == propName) {
-            if (arr[i].value.indexOf(propValue) >= 0) {
-                return true;
+        if (arr[i] && arr[i][propName] == propValue) {
+            return arr[i];
+        }
+    }
+    return undefined;
+}
+
+/**
+ * Get value from database item by property name
+ * @param {Array} item - Database item (array of {name, value} objects)
+ * @param {string} name - Property name to retrieve
+ * @returns {*} Property value or empty string if not found
+ */
+function getValueFromDatabaseItem(item, name) {
+    // Input validation
+    if (!item) {
+        console.error('getValueFromDatabaseItem: item is required');
+        return '';
+    }
+    if (!name) {
+        console.error('getValueFromDatabaseItem: name is required');
+        return '';
+    }
+
+    const element = findElement(item, "name", name);
+
+    if (!element) {
+        console.warn(`getValueFromDatabaseItem: Property "${name}" not found in item`);
+        return '';
+    }
+
+    return element["value"] !== undefined ? element["value"] : '';
+}
+
+/**
+ * Check if weapon has property with given value (substring match)
+ * @param {Array} arr - Weapon data array
+ * @param {string} propName - Property name to check
+ * @param {string} propValue - Value to search for (substring)
+ * @returns {boolean} True if property contains value
+ */
+function findWeaponWithProperty(arr, propName, propValue) {
+    // Input validation
+    if (!Array.isArray(arr)) {
+        console.error('findWeaponWithProperty: arr must be an array');
+        return false;
+    }
+    // Allow empty string for propValue (indexOf('') returns 0, which is valid)
+    if (!propName || propValue === null || propValue === undefined) {
+        return false;
+    }
+
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] && arr[i].name == propName && arr[i].value) {
+            try {
+                if (arr[i].value.indexOf(propValue) >= 0) {
+                    return true;
+                }
+            } catch (e) {
+                // Skip non-string values
+                continue;
             }
         }
     }

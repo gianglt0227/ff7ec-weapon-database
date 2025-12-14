@@ -189,14 +189,13 @@ describe('Array Utility Functions', () => {
     });
 
     describe('Edge Cases', () => {
-      test('should throw error for nonexistent property', () => {
+      test('should return empty string for nonexistent property', () => {
         const item = createMockWeapon({ name: 'Test' });
 
-        // getValueFromDatabaseItem will crash if findElement returns undefined
-        // because it tries to access undefined["value"]
-        expect(() => {
-          getValueFromDatabaseItem(item, 'nonexistent');
-        }).toThrow();
+        // getValueFromDatabaseItem now gracefully handles missing properties
+        // by returning empty string instead of throwing
+        const result = getValueFromDatabaseItem(item, 'nonexistent');
+        expect(result).toBe('');
       });
 
       test('should handle numeric string values', () => {
