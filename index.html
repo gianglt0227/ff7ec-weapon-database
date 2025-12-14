@@ -393,9 +393,11 @@
                 </div>
             </div>
             <div
-                class="mt-6 flex items-center justify-center gap-2 text-sm text-text-muted-light dark:text-text-muted-dark">
-                <span class="material-symbols-outlined text-base">info</span>
-                <span>Note: Click on column headers to sort results.</span>
+                class="mt-6 flex flex-col items-center justify-center gap-2 text-sm text-text-muted-light dark:text-text-muted-dark">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">update</span>
+                    <span>Last database update: <span id="lastUpdateDate">Loading...</span></span>
+                </div>
             </div>
         </div>
 
@@ -559,6 +561,24 @@
 
             console.log("Created Modern Table");
         }
+
+        /**
+         * Display the last update date of weaponData.csv
+         * Date is based on the last git commit that modified weaponData.csv
+         *
+         * To update this date, run:
+         * git log -1 --format="%ad" --date=format:'%Y/%m/%d' -- weaponData.csv
+         */
+        function displayLastUpdateDate() {
+            const lastUpdateElement = document.getElementById('lastUpdateDate');
+            // This date should be updated when weaponData.csv is modified
+            // Run: git log -1 --format="%ad" --date=format:'%Y/%m/%d' -- weaponData.csv
+            const lastCommitDate = '2025/11/30';
+            lastUpdateElement.textContent = lastCommitDate;
+        }
+
+        // Display last update date on page load
+        document.addEventListener('DOMContentLoaded', displayLastUpdateDate);
 
     </script>
 </body>
